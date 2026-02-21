@@ -102,6 +102,8 @@ function resetCouponState() {
   appliedCouponCode = "";
   appliedCouponDiscount = 0;
   appliedCouponFinalTotal = 0;
+  const input = document.getElementById("couponCodeInput");
+  if (input) input.value = "";
   showCouponMsg("");
   renderCheckoutSummary();
 }
@@ -111,6 +113,7 @@ function setCart(cart) {
   resetCouponState();
   updateCartCount();
   renderCart();
+  loadCartRecommendations();
   syncAbandonedCart(cart);
 }
 
@@ -212,6 +215,11 @@ function bindCouponButton() {
   if (!btn || btn.dataset.bound === "1") return;
   btn.dataset.bound = "1";
   btn.addEventListener("click", applyCoupon);
+  const clearBtn = document.getElementById("clearCouponBtn");
+  if (clearBtn && clearBtn.dataset.bound !== "1") {
+    clearBtn.dataset.bound = "1";
+    clearBtn.addEventListener("click", resetCouponState);
+  }
 }
 
 function renderCart() {
@@ -448,6 +456,46 @@ async function saveAddressIfMissing(address) {
   });
 }
 
+async function loadCartRecommendations() {
+  const wrap = document.getElementById("cartRecommendations");
+  if (!wrap) return;
+  const cart = getCart();
+  if (!cart.length) {
+    wrap.innerHTML = "";
+    return;
+  }
+  try {
+    const res = await fetch(`${API}/products`);
+    if (!res.ok) return;
+    const all = await res.json();
+    const inCart = new Set(cart.map((i) => String(i.productId)));
+    const list = (all || []).filter((p) => !inCart.has(String(p._id))).slice(0, 4);
+    if (!list.length) {
+      wrap.innerHTML = "";
+      return;
+    }
+    wrap.innerHTML = `
+      <h3 class="cart-reco-title">اقتراحات لك</h3>
+      <div class="cart-reco-grid">
+        ${list.map((p) => {
+          const imgRaw = (p.images && p.images[0]) || p.image || "https://via.placeholder.com/600";
+          const img = imgRaw.startsWith("/uploads") ? `${BACKEND}${imgRaw}` : imgRaw;
+          return `
+            <article class="cart-reco-card">
+              <img src="${img}" alt="${p.name}">
+              <div class="cart-reco-body">
+                <h4>${p.name}</h4>
+                <p>${Number(p.price || 0).toFixed(0)} ${t("currency")}</p>
+                <a class="cart-reco-link" href="index.html?product=${encodeURIComponent(p._id)}">عرض المنتج</a>
+              </div>
+            </article>
+          `;
+        }).join("")}
+      </div>
+    `;
+  } catch {}
+}
+
 renderCart();
 updateCartCount();
 applyLang(localStorage.getItem("lang") || "ar");
@@ -455,6 +503,7 @@ bindPaymentGuard();
 bindCouponButton();
 renderCheckoutSummary();
 prefillProfile();
+loadCartRecommendations();
 
 const langToggle = document.getElementById("langToggle");
 if (langToggle) {

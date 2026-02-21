@@ -1241,6 +1241,61 @@ body.modal-open {
   border-top: 1px dashed var(--border);
 }
 
+#cartRecommendations {
+  margin-top: 1.6rem;
+}
+
+.cart-reco-title {
+  font-size: 2rem;
+  margin-bottom: 0.9rem;
+}
+
+.cart-reco-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.cart-reco-card {
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.cart-reco-card img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  display: block;
+}
+
+.cart-reco-body {
+  padding: 0.7rem 0.85rem 0.9rem;
+  text-align: right;
+}
+
+.cart-reco-body h4 {
+  font-size: 2rem;
+  margin-bottom: 0.2rem;
+}
+
+.cart-reco-body p {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 0.45rem;
+}
+
+.cart-reco-link {
+  display: inline-block;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.35rem 0.75rem;
+  text-decoration: none;
+  color: var(--text);
+  background: var(--surface-muted);
+}
+
 .submit-order-btn {
   width: 100%;
   padding: 1rem;
@@ -1696,6 +1751,10 @@ body.modal-open {
 
   .cart-item {
     flex-wrap: wrap;
+  }
+
+  .cart-reco-grid {
+    grid-template-columns: 1fr;
   }
 
   .auth-card {
