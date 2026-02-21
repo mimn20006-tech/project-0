@@ -1,8 +1,8 @@
-const AUTH_BACKEND =
-  window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
-    ? "http://localhost:5000"
-    : "https://hand-aura-production.up.railway.app";
-const API = `${AUTH_BACKEND}/api`;
+﻿const authHost = window.location.hostname;
+const AUTH_BACKEND = /^(localhost|127[.]0[.]0[.]1)$/i.test(authHost)
+  ? "http://" + authHost + ":5000"
+  : "https://ecommerce-api-production-c3a5.up.railway.app";
+const API = AUTH_BACKEND + "/api";
 const REQUEST_TIMEOUT_MS = 12000;
 
 function withTimeoutFetch(url, options = {}, timeoutMs = REQUEST_TIMEOUT_MS) {
@@ -112,7 +112,7 @@ async function checkOAuthStatus() {
     document.querySelectorAll(".apple-btn").forEach((btn) => {
       btn.disabled = !data.apple;
       btn.classList.toggle("is-disabled", !data.apple);
-      if (!data.apple) btn.title = "Apple غير متاح بدون دومين و HTTPS";
+      if (!data.apple) btn.title = "Apple غير متاح بدون نطاق و HTTPS";
     });
   } catch {}
 }
@@ -196,7 +196,7 @@ if (registerForm) {
         const data = await res.json();
         setAuth(data.token, data.user);
         localStorage.setItem("pending_verify_email", email);
-        localStorage.setItem("verify_notice", "تم إرسال رمز التأكيد إلى بريدك الإلكتروني");
+        localStorage.setItem("verify_notice", "تم إرسال رمز التفعيل إلى بريدك الإلكتروني");
         location.href = "verify.html";
         return;
       }
@@ -269,14 +269,14 @@ if (resendBtn) {
     const emailInput = document.querySelector("#verifyForm input[name='email']");
     const email = emailInput ? emailInput.value.trim() : "";
     if (!/^\S+@\S+\.\S+$/.test(email)) {
-      setFieldError(emailInput, "اكتب البريد الإلكتروني أولًا");
+      setFieldError(emailInput, "اكتب البريد الإلكتروني أولاً");
       return;
     }
 
     resendBtn.disabled = true;
     const oldText = resendBtn.textContent;
     resendBtn.textContent = "جارٍ الإرسال...";
-    setFormSuccess("verifyError", "جارٍ إرسال رمز التأكيد... (قد يستغرق حتى 60 ثانية)");
+    setFormSuccess("verifyError", "جارٍ إرسال رمز التفعيل... (قد يستغرق حتى 60 ثانية)");
 
     const startTime = Date.now();
     console.log("FRONTEND_RESEND_START", { email, api: `${API}/auth/resend` });
@@ -304,7 +304,7 @@ if (resendBtn) {
       console.log("FRONTEND_RESEND_RESPONSE", { status: res.status, ok: res.ok, elapsed });
       
       if (res.ok) {
-        setFieldSuccess(emailInput, "تم إرسال كود التأكيد");
+        setFieldSuccess(emailInput, "تم إرسال كود التفعيل");
         setFormSuccess("verifyError", `تم إرسال رمز جديد إلى بريدك الإلكتروني (استغرق ${elapsed} ثانية)`);
       } else {
         const msg = await readError(res, "تعذر إرسال الكود");

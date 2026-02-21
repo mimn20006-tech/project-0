@@ -1,13 +1,11 @@
 ﻿(function () {
   const host = window.location.hostname;
-  const isRailwayFront = /hand-aura-front-production\.up\.railway\.app$/i.test(host);
-  const isRailwayBack = /hand-aura-production\.up\.railway\.app$/i.test(host);
-  const BACKEND = (isRailwayFront || isRailwayBack)
-    ? "https://hand-aura-production.up.railway.app"
-    : `http://${host}:5000`;
-  const API = `${BACKEND}/api`;
-
-  const key = "analytics_session_id";
+  const isLocal = /^(localhost|127[.]0[.]0[.]1)$/i.test(host);
+  const BACKEND = isLocal
+    ? "http://" + host + ":5000"
+    : "https://ecommerce-api-production-c3a5.up.railway.app";
+  const API = BACKEND + "/api";
+const key = "analytics_session_id";
   let sessionId = localStorage.getItem(key);
   if (!sessionId) {
     sessionId = `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
@@ -37,3 +35,8 @@
       path: location.pathname
     });
 })();
+
+
+
+
+

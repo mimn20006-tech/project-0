@@ -1,11 +1,9 @@
-const host = window.location.hostname;
-const isRailwayFront = /hand-aura-front-production\.up\.railway\.app$/i.test(host);
-const isRailwayBack = /hand-aura-production\.up\.railway\.app$/i.test(host);
-const BACKEND = (isRailwayFront || isRailwayBack)
-  ? "https://hand-aura-production.up.railway.app"
-  : `http://${host}:5000`;
+﻿const host = window.location.hostname;
+const isLocal = /^(localhost|127[.]0[.]0[.]1)$/i.test(host);
+const BACKEND = isLocal
+  ? "http://" + host + ":5000"
+  : "https://ecommerce-api-production-c3a5.up.railway.app";
 const API = BACKEND + "/api";
-
 function authHeaders() {
   const token = localStorage.getItem("auth_token");
   return token ? { Authorization: `Bearer ${token}` } : {};
@@ -66,7 +64,7 @@ document.getElementById("profileForm").addEventListener("submit", async (e) => {
       const err = document.createElement("p");
       err.className = "field-error shake";
       form.avatar.insertAdjacentElement("afterend", err);
-      err.textContent = "حجم الصورة يجب ألا يزيد عن 2MB";
+      err.textContent = "حجم الصورة يجب أن يكون أقل من 2MB";
       setTimeout(() => err.remove(), 10000);
       return;
     }
@@ -80,10 +78,10 @@ document.getElementById("profileForm").addEventListener("submit", async (e) => {
   if (res.ok) {
     const data = await res.json();
     setAuth(data.token, data.user);
-    msg.textContent = "تم حفظ البيانات";
+    msg.textContent = "تم حفظ البيانات بنجاح";
     setTimeout(() => (msg.textContent = ""), 10000);
   } else {
-    let m = "تعذر حفظ البيانات";
+    let m = "حدث خطأ أثناء حفظ البيانات";
     try {
       const d = await res.json();
       if (d && d.error) m = d.error;
@@ -94,3 +92,8 @@ document.getElementById("profileForm").addEventListener("submit", async (e) => {
 });
 
 loadProfile();
+
+
+
+
+

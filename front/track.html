@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
@@ -23,7 +23,7 @@
     <section class="checkout-form" style="max-width: 500px;">
       <h2 data-i18n="track_title">تتبع حالة الطلب</h2>
       <p style="font-size:0.85rem;color:var(--muted);margin-bottom:1rem" data-i18n="track_hint">
-        أدخل رقم الطلب الذي ظهر لك بعد إتمام الشراء، مع البريد الإلكتروني المستخدم في الطلب.
+        أدخل رقم الطلب والبريد الإلكتروني الذي استخدمته عند إتمام الشراء، وسنقوم بعرض حالة الطلب فورًا.
       </p>
       <form id="trackForm">
         <div class="form-group">
@@ -36,14 +36,14 @@
         </div>
         <button type="submit" class="submit-order-btn" data-i18n="show_status">عرض حالة الطلب</button>
       </form>
-      <p class="contact-phone" data-i18n="contact_phone">للتواصل: 01025457419</p>
+      <p class="contact-phone" data-i18n="contact_phone">للتوصل: 01025457419</p>
     </section>
 
     <section id="trackResult" class="cart-summary" style="max-width: 500px; margin:0 auto; display:none"></section>
   </main>
 
   <script src="track.js"></script>
-  <script src="auth-ui.js"></script>
+  <script src="auth-ui.js?v=20260221d"></script>
 
   <div class="menu-overlay" id="menuOverlay"></div>
   <aside class="side-menu" id="sideMenu">
@@ -59,3 +59,4 @@
   </aside>
 </body>
 </html>
+

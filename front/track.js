@@ -1,35 +1,34 @@
-const host = window.location.hostname;
-const isRailwayFront = /hand-aura-front-production\.up\.railway\.app$/i.test(host);
-const isRailwayBack = /hand-aura-production\.up\.railway\.app$/i.test(host);
-const BACKEND = (isRailwayFront || isRailwayBack)
-  ? "https://hand-aura-production.up.railway.app"
-  : `http://${host}:5000`;
+﻿const host = window.location.hostname;
+const isLocal = /^(localhost|127[.]0[.]0[.]1)$/i.test(host);
+const BACKEND = isLocal
+  ? "http://" + host + ":5000"
+  : "https://ecommerce-api-production-c3a5.up.railway.app";
 const API = BACKEND + "/api";
 let currentLang = "ar";
 
 function t(key) {
   const dict = {
     ar: {
-      track: "تتبع الطلب",
-      track_title: "تتبع حالة الطلب",
-      track_hint: "أدخل رقم الطلب الذي ظهر لك بعد إتمام الشراء، مع البريد الإلكتروني المستخدم في الطلب.",
-      order_id: "رقم الطلب",
-      email: "البريد الإلكتروني",
-      show_status: "عرض حالة الطلب",
-      loading: "جاري جلب بيانات الطلب...",
-      not_found: "لم يتم العثور على طلب بهذا الرقم.",
-      email_mismatch: "البريد الإلكتروني لا يطابق هذا الطلب.",
-      error_fetch: "حدث خطأ أثناء جلب الطلب.",
-      status: "حالة الطلب",
-      order_number: "رقم الطلب",
-      order_date: "تاريخ الطلب",
-      total: "الإجمالي",
-      products: "المنتجات",
-      contact_phone: "للتواصل: 01025457419",
-      pending: "قيد الانتظار",
-      shipped: "تم الشحن",
-      delivered: "تم التوصيل",
-      server_error: "تعذر الاتصال بالسيرفر. تأكد من تشغيل الباكند."
+      track: "ØªØªØ¨Ø¹ Ø§Ù„Ø·Ù„Ø¨",
+      track_title: "ØªØªØ¨Ø¹ Ø­Ø§Ù„Ø© Ø§Ù„Ø·Ù„Ø¨",
+      track_hint: "Ø£Ø¯Ø®Ù„ Ø±Ù‚Ù… Ø§Ù„Ø·Ù„Ø¨ Ø§Ù„Ø°ÙŠ Ø¸Ù‡Ø± Ù„Ùƒ Ø¨Ø¹Ø¯ Ø¥ØªÙ…Ø§Ù… Ø§Ù„Ø´Ø±Ø§Ø¡ØŒ Ù…Ø¹ Ø§Ù„Ø¨Ø±ÙŠØ¯ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… ÙÙŠ Ø§Ù„Ø·Ù„Ø¨.",
+      order_id: "Ø±Ù‚Ù… Ø§Ù„Ø·Ù„Ø¨",
+      email: "Ø§Ù„Ø¨Ø±ÙŠØ¯ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ",
+      show_status: "Ø¹Ø±Ø¶ Ø­Ø§Ù„Ø© Ø§Ù„Ø·Ù„Ø¨",
+      loading: "Ø¬Ø§Ø±ÙŠ Ø¬Ù„Ø¨ Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ø·Ù„Ø¨...",
+      not_found: "Ù„Ù… ÙŠØªÙ… Ø§Ù„Ø¹Ø«ÙˆØ± Ø¹Ù„Ù‰ Ø·Ù„Ø¨ Ø¨Ù‡Ø°Ø§ Ø§Ù„Ø±Ù‚Ù….",
+      email_mismatch: "Ø§Ù„Ø¨Ø±ÙŠØ¯ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ Ù„Ø§ ÙŠØ·Ø§Ø¨Ù‚ Ù‡Ø°Ø§ Ø§Ù„Ø·Ù„Ø¨.",
+      error_fetch: "Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ Ø¬Ù„Ø¨ Ø§Ù„Ø·Ù„Ø¨.",
+      status: "Ø­Ø§Ù„Ø© Ø§Ù„Ø·Ù„Ø¨",
+      order_number: "Ø±Ù‚Ù… Ø§Ù„Ø·Ù„Ø¨",
+      order_date: "ØªØ§Ø±ÙŠØ® Ø§Ù„Ø·Ù„Ø¨",
+      total: "Ø§Ù„Ø¥Ø¬Ù…Ø§Ù„ÙŠ",
+      products: "Ø§Ù„Ù…Ù†ØªØ¬Ø§Øª",
+      contact_phone: "Ù„Ù„ØªÙˆØ§ØµÙ„: 01025457419",
+      pending: "Ù‚ÙŠØ¯ Ø§Ù„Ø§Ù†ØªØ¸Ø§Ø±",
+      shipped: "ØªÙ… Ø§Ù„Ø´Ø­Ù†",
+      delivered: "ØªÙ… Ø§Ù„ØªÙˆØµÙŠÙ„",
+      server_error: "ØªØ¹Ø°Ø± Ø§Ù„Ø§ØªØµØ§Ù„ Ø¨Ø§Ù„Ø³ÙŠØ±ÙØ±. ØªØ£ÙƒØ¯ Ù…Ù† ØªØ´ØºÙŠÙ„ Ø§Ù„Ø¨Ø§ÙƒÙ†Ø¯."
     },
     en: {
       track: "Track Order",
@@ -118,7 +117,7 @@ document.getElementById("trackForm").addEventListener("submit", async (e) => {
     const itemsHtml = (order.items || [])
       .map(
         (i) =>
-          `<li>${i.name} × ${i.quantity} — ${Number(i.price).toFixed(0)} ${currentLang === "ar" ? "جنيه" : "EGP"}${i.size ? ` (${currentLang === "ar" ? "المقاس" : "Size"}: ${i.size})` : ""}</li>`
+          `<li>${i.name} Ã— ${i.quantity} â€” ${Number(i.price).toFixed(0)} ${currentLang === "ar" ? "Ø¬Ù†ÙŠÙ‡" : "EGP"}${i.size ? ` (${currentLang === "ar" ? "Ø§Ù„Ù…Ù‚Ø§Ø³" : "Size"}: ${i.size})` : ""}</li>`
       )
       .join("");
 
@@ -126,7 +125,7 @@ document.getElementById("trackForm").addEventListener("submit", async (e) => {
       <div class="cart-total">${t("status")}: ${statusLabel}</div>
       <p style="margin-bottom:0.5rem;font-size:0.9rem;color:var(--muted)">${t("order_number")}: <code>${order._id}</code></p>
       <p style="margin-bottom:0.5rem;font-size:0.9rem;color:var(--muted)">${t("order_date")}: ${created}</p>
-      <p style="margin-bottom:0.5rem;">${t("total")}: <strong>${Number(order.total).toFixed(0)} ${currentLang === "ar" ? "جنيه" : "EGP"}</strong></p>
+      <p style="margin-bottom:0.5rem;">${t("total")}: <strong>${Number(order.total).toFixed(0)} ${currentLang === "ar" ? "Ø¬Ù†ÙŠÙ‡" : "EGP"}</strong></p>
       <p style="margin-top:0.75rem;margin-bottom:0.25rem;font-size:0.9rem;">${t("products")}:</p>
       <ul style="padding-right:1.2rem;font-size:0.85rem;">${itemsHtml}</ul>
     `;
@@ -145,3 +144,8 @@ if (langToggle) {
     applyLang(next);
   });
 }
+
+
+
+
+

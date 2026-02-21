@@ -1,9 +1,8 @@
-const host = window.location.hostname;
-const isRailwayFront = /hand-aura-front-production\.up\.railway\.app$/i.test(host);
-const isRailwayBack = /hand-aura-production\.up\.railway\.app$/i.test(host);
-const BACKEND = (isRailwayFront || isRailwayBack)
-  ? "https://hand-aura-production.up.railway.app"
-  : `http://${host}:5000`;
+﻿const host = window.location.hostname;
+const isLocal = /^(localhost|127[.]0[.]0[.]1)$/i.test(host);
+const BACKEND = isLocal
+  ? "http://" + host + ":5000"
+  : "https://ecommerce-api-production-c3a5.up.railway.app";
 const API = BACKEND + "/api";
 if (localStorage.getItem("admin_dark_mode") === "1") {
   document.body.classList.add("admin-dark");
@@ -70,11 +69,11 @@ if (adminLoginForm) {
     const email = form.email.value.trim();
     const password = form.password.value;
     if (!/^\S+@\S+\.\S+$/.test(email)) {
-      setFieldError(form.email, "البريد الإلكتروني غير صحيح");
+      setFieldError(form.email, "Ø§Ù„Ø¨Ø±ÙŠØ¯ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ ØºÙŠØ± ØµØ­ÙŠØ­");
       return;
     }
     if (!password || password.length < 6) {
-      setFieldError(form.password, "كلمة المرور يجب ألا تقل عن 6 أحرف");
+      setFieldError(form.password, "ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ± ÙŠØ¬Ø¨ Ø£Ù„Ø§ ØªÙ‚Ù„ Ø¹Ù† 6 Ø£Ø­Ø±Ù");
       return;
     }
     const res = await fetch(`${API}/auth/admin/login`, {
@@ -87,7 +86,7 @@ if (adminLoginForm) {
       setAdminAuth(data.token, data.user);
       location.href = "admin.html";
     } else {
-      let msg = "تعذر تسجيل الدخول";
+      let msg = "ØªØ¹Ø°Ø± ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„";
       try {
         const data = await res.json();
         if (data && data.error) msg = data.error;
@@ -109,15 +108,15 @@ if (adminRegisterForm) {
     const email = form.email.value.trim();
     const password = form.password.value;
     if (name.length < 2) {
-      setFieldError(form.name, "الاسم قصير");
+      setFieldError(form.name, "Ø§Ù„Ø§Ø³Ù… Ù‚ØµÙŠØ±");
       return;
     }
     if (!/^\S+@\S+\.\S+$/.test(email)) {
-      setFieldError(form.email, "البريد الإلكتروني غير صحيح");
+      setFieldError(form.email, "Ø§Ù„Ø¨Ø±ÙŠØ¯ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ ØºÙŠØ± ØµØ­ÙŠØ­");
       return;
     }
     if (!password || password.length < 6) {
-      setFieldError(form.password, "كلمة المرور يجب ألا تقل عن 6 أحرف");
+      setFieldError(form.password, "ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ± ÙŠØ¬Ø¨ Ø£Ù„Ø§ ØªÙ‚Ù„ Ø¹Ù† 6 Ø£Ø­Ø±Ù");
       return;
     }
     const res = await fetch(`${API}/auth/admin/register`, {
@@ -130,7 +129,7 @@ if (adminRegisterForm) {
       setAdminAuth(data.token, data.user);
       location.href = "admin-success.html";
     } else {
-      let msg = "تعذر إنشاء الأدمن";
+      let msg = "ØªØ¹Ø°Ø± Ø¥Ù†Ø´Ø§Ø¡ Ø§Ù„Ø£Ø¯Ù…Ù†";
       try {
         const data = await res.json();
         if (data && data.error) msg = data.error;
@@ -142,3 +141,8 @@ if (adminRegisterForm) {
 }
 
 checkAdminExists();
+
+
+
+
+

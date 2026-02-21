@@ -1,9 +1,8 @@
-const adminRolesHost = window.location.hostname;
-const adminRolesBackend = /hand-aura-(front-production|production)\.up\.railway\.app$/i.test(adminRolesHost)
-  ? "https://hand-aura-production.up.railway.app"
-  : `http://${adminRolesHost}:5000`;
-const adminRolesApi = `${adminRolesBackend}/api`;
-
+﻿const adminRolesHost = window.location.hostname;
+const adminRolesBackend = /^(localhost|127[.]0[.]0[.]1)$/i.test(adminRolesHost)
+  ? "http://" + adminRolesHost + ":5000"
+  : "https://ecommerce-api-production-c3a5.up.railway.app";
+const adminRolesApi = adminRolesBackend + "/api";
 function adminToken() {
   return localStorage.getItem("admin_token") || "";
 }
@@ -59,12 +58,12 @@ function setupDarkMode() {
   btn.id = "adminDarkToggle";
   btn.type = "button";
   btn.className = "icon-btn";
-  btn.textContent = isDark ? "☀" : "🌙";
+  btn.textContent = isDark ? "â˜€" : "ðŸŒ™";
   btn.addEventListener("click", () => {
     const nowDark = !document.body.classList.contains("admin-dark");
     document.body.classList.toggle("admin-dark", nowDark);
     localStorage.setItem(key, nowDark ? "1" : "0");
-    btn.textContent = nowDark ? "☀" : "🌙";
+    btn.textContent = nowDark ? "â˜€" : "ðŸŒ™";
   });
   topbar.appendChild(btn);
 }
@@ -72,7 +71,7 @@ function setupDarkMode() {
 async function loadRoles() {
   const wrap = document.getElementById("rolesTableWrap");
   if (!wrap) return;
-  wrap.innerHTML = "<p style='color:var(--muted)'>جاري التحميل...</p>";
+  wrap.innerHTML = "<p style='color:var(--muted)'>Ø¬Ø§Ø±ÙŠ Ø§Ù„ØªØ­Ù…ÙŠÙ„...</p>";
   const res = await fetch(`${adminRolesApi}/admin/users`, { headers: adminHeaders() });
   if (res.status === 401) {
     localStorage.removeItem("admin_token");
@@ -80,22 +79,22 @@ async function loadRoles() {
     return;
   }
   if (!res.ok) {
-    wrap.innerHTML = "<p style='color:#e74c3c'>تعذر تحميل المستخدمين.</p>";
+    wrap.innerHTML = "<p style='color:#e74c3c'>ØªØ¹Ø°Ø± ØªØ­Ù…ÙŠÙ„ Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù…ÙŠÙ†.</p>";
     return;
   }
   const users = await res.json();
   if (!users.length) {
-    wrap.innerHTML = "<p style='color:var(--muted)'>لا يوجد مستخدمون.</p>";
+    wrap.innerHTML = "<p style='color:var(--muted)'>Ù„Ø§ ÙŠÙˆØ¬Ø¯ Ù…Ø³ØªØ®Ø¯Ù…ÙˆÙ†.</p>";
     return;
   }
   wrap.innerHTML = `
     <table class="admin-table">
       <thead>
         <tr>
-          <th>الاسم</th>
-          <th>الإيميل</th>
-          <th>الدور</th>
-          <th>حفظ</th>
+          <th>Ø§Ù„Ø§Ø³Ù…</th>
+          <th>Ø§Ù„Ø¥ÙŠÙ…ÙŠÙ„</th>
+          <th>Ø§Ù„Ø¯ÙˆØ±</th>
+          <th>Ø­ÙØ¸</th>
         </tr>
       </thead>
       <tbody>
@@ -111,7 +110,7 @@ async function loadRoles() {
                 <option value="user" ${u.role === "user" ? "selected" : ""}>user</option>
               </select>
             </td>
-            <td><button type="button" class="admin-btn admin-btn-edit" data-save-id="${u._id}">حفظ</button></td>
+            <td><button type="button" class="admin-btn admin-btn-edit" data-save-id="${u._id}">Ø­ÙØ¸</button></td>
           </tr>
         `).join("")}
       </tbody>
@@ -130,11 +129,11 @@ async function loadRoles() {
       });
       btn.disabled = false;
       if (!update.ok) {
-        alert("تعذر حفظ الدور");
+        alert("ØªØ¹Ø°Ø± Ø­ÙØ¸ Ø§Ù„Ø¯ÙˆØ±");
         return;
       }
-      btn.textContent = "تم";
-      setTimeout(() => (btn.textContent = "حفظ"), 1200);
+      btn.textContent = "ØªÙ…";
+      setTimeout(() => (btn.textContent = "Ø­ÙØ¸"), 1200);
     });
   });
 }
@@ -143,3 +142,7 @@ ensureAdmin();
 bindMenu();
 setupDarkMode();
 loadRoles();
+
+
+
+

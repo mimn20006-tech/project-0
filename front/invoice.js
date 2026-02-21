@@ -1,5 +1,5 @@
 ﻿(function () {
-  const API = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" ? "http://localhost:5000" : "https://hand-aura-production.up.railway.app") + "/api";
+  const API = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" ? "http://localhost:5000" : "https://ecommerce-api-production-c3a5.up.railway.app") + "/api";
   let currentLang = (window.getGlobalLang && window.getGlobalLang()) || localStorage.getItem("lang") || "ar";
   const orderId = new URLSearchParams(location.search).get("orderId");
   const body = document.getElementById("invoiceBody");
@@ -81,3 +81,4 @@
     body.innerHTML = `<p>${t("تعذر تحميل الفاتورة.", "Failed to load invoice.")}</p>`;
   });
 })();
+

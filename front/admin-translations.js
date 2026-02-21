@@ -1,9 +1,8 @@
-const trHost = window.location.hostname;
-const trBackend = /hand-aura-(front-production|production)\.up\.railway\.app$/i.test(trHost)
-  ? "https://hand-aura-production.up.railway.app"
-  : `http://${trHost}:5000`;
-const trApi = `${trBackend}/api`;
-
+﻿const trHost = window.location.hostname;
+const trBackend = /^(localhost|127[.]0[.]0[.]1)$/i.test(trHost)
+  ? "http://" + trHost + ":5000"
+  : "https://ecommerce-api-production-c3a5.up.railway.app";
+const trApi = trBackend + "/api";
 function trHeaders(json = false) {
   const token = localStorage.getItem("admin_token");
   const headers = token ? { Authorization: `Bearer ${token}` } : {};
@@ -40,12 +39,12 @@ function setupDarkMode() {
   btn.id = "adminDarkToggle";
   btn.type = "button";
   btn.className = "icon-btn";
-  btn.textContent = isDark ? "☀" : "🌙";
+  btn.textContent = isDark ? "â˜€" : "ðŸŒ™";
   btn.addEventListener("click", () => {
     const nowDark = !document.body.classList.contains("admin-dark");
     document.body.classList.toggle("admin-dark", nowDark);
     localStorage.setItem(key, nowDark ? "1" : "0");
-    btn.textContent = nowDark ? "☀" : "🌙";
+    btn.textContent = nowDark ? "â˜€" : "ðŸŒ™";
   });
   topbar.appendChild(btn);
 }
@@ -66,7 +65,7 @@ document.getElementById("i18nForm")?.addEventListener("submit", async (e) => {
   try {
     dict = JSON.parse(document.getElementById("dictInput").value || "{}");
   } catch {
-    alert("صيغة JSON غير صحيحة");
+    alert("ØµÙŠØºØ© JSON ØºÙŠØ± ØµØ­ÙŠØ­Ø©");
     return;
   }
   const languages = (document.getElementById("languagesInput").value || "")
@@ -84,7 +83,7 @@ document.getElementById("i18nForm")?.addEventListener("submit", async (e) => {
     body: JSON.stringify(payload)
   });
   if (!res.ok) {
-    let msg = "تعذر حفظ الترجمة";
+    let msg = "ØªØ¹Ø°Ø± Ø­ÙØ¸ Ø§Ù„ØªØ±Ø¬Ù…Ø©";
     try {
       const d = await res.json();
       if (d?.error) msg = d.error;
@@ -92,10 +91,14 @@ document.getElementById("i18nForm")?.addEventListener("submit", async (e) => {
     alert(msg);
     return;
   }
-  alert("تم حفظ الترجمة الديناميكية");
+  alert("ØªÙ… Ø­ÙØ¸ Ø§Ù„ØªØ±Ø¬Ù…Ø© Ø§Ù„Ø¯ÙŠÙ†Ø§Ù…ÙŠÙƒÙŠØ©");
 });
 
 if (!localStorage.getItem("admin_token")) location.href = "admin-login.html";
 bindTranslationsMenu();
 setupDarkMode();
 loadI18n();
+
+
+
+

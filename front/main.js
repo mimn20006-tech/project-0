@@ -1,9 +1,8 @@
 ﻿const host = window.location.hostname;
-const isRailwayFront = /hand-aura-front-production\.up\.railway\.app$/i.test(host);
-const isRailwayBack = /hand-aura-production\.up\.railway\.app$/i.test(host);
-const BACKEND = (isRailwayFront || isRailwayBack)
-  ? "https://hand-aura-production.up.railway.app"
-  : `http://${host}:5000`;
+const isLocal = /^(localhost|127[.]0[.]0[.]1)$/i.test(host);
+const BACKEND = isLocal
+  ? "http://" + host + ":5000"
+  : "https://ecommerce-api-production-c3a5.up.railway.app";
 const API = BACKEND + "/api";
 let allProducts = [];
 let activeCategory = "";
@@ -946,3 +945,8 @@ loadPopularity().then(updateView);
 applyLang(localStorage.getItem("lang") || "ar");
 initProductModal();
 initTheme();
+
+
+
+
+
