@@ -1,48 +1,48 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>إدارة المرشحات | Hand Aura</title>
+  <title>Ø¥Ø¯Ø§Ø±Ø© Ø§Ù„Ù…Ø±Ø´Ø­Ø§Øª | Hand Aura</title>
   <link rel="stylesheet" href="style.css?v=20260214">
 </head>
 <body class="center-page">
   <header class="admin-topbar">
     <div class="admin-topbar-inner">
-      <button class="icon-btn menu-btn" aria-label="القائمة">☰</button>
-      <div class="admin-brand">Hand Aura | إدارة المرشحات</div>
-      <a href="index.html" class="admin-back">الرجوع</a>
+      <button class="icon-btn menu-btn" aria-label="Ø§Ù„Ù‚Ø§Ø¦Ù…Ø©">â˜°</button>
+      <div class="admin-brand">Hand Aura | Ø¥Ø¯Ø§Ø±Ø© Ø§Ù„Ù…Ø±Ø´Ø­Ø§Øª</div>
+      <a href="index.html" class="admin-back">Ø§Ù„Ø±Ø¬ÙˆØ¹</a>
     </div>
   </header>
 
   <main class="main center-main">
     <div class="admin-section">
-      <h2>إدارة المرشحات والفئات</h2>
+      <h2>Ø¥Ø¯Ø§Ø±Ø© Ø§Ù„Ù…Ø±Ø´Ø­Ø§Øª ÙˆØ§Ù„ÙØ¦Ø§Øª</h2>
       <div class="admin-filters">
         <div>
-          <h3>الفئات</h3>
+          <h3>Ø§Ù„ÙØ¦Ø§Øª</h3>
           <div id="categoriesWrap" class="filter-list"></div>
           <div class="filter-add">
-            <input type="text" id="newCategoryAr" placeholder="اسم الفئة بالعربية">
-            <input type="text" id="newCategoryEn" placeholder="اسم الفئة بالإنجليزية">
-            <input type="text" id="newCategoryKey" placeholder="المفتاح (مثال: Men)">
-            <button type="button" class="admin-btn admin-btn-edit" id="addCategoryBtn">إضافة فئة</button>
+            <input type="text" id="newCategoryAr" placeholder="Ø§Ø³Ù… Ø§Ù„ÙØ¦Ø© Ø¨Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©">
+            <input type="text" id="newCategoryEn" placeholder="Ø§Ø³Ù… Ø§Ù„ÙØ¦Ø© Ø¨Ø§Ù„Ø¥Ù†Ø¬Ù„ÙŠØ²ÙŠØ©">
+            <input type="text" id="newCategoryKey" placeholder="Ø§Ù„Ù…ÙØªØ§Ø­ (Ù…Ø«Ø§Ù„: Men)">
+            <button type="button" class="admin-btn admin-btn-edit" id="addCategoryBtn">Ø¥Ø¶Ø§ÙØ© ÙØ¦Ø©</button>
           </div>
         </div>
         <div>
-          <h3>الأنواع</h3>
+          <h3>Ø§Ù„Ø£Ù†ÙˆØ§Ø¹</h3>
           <div id="typesWrap" class="filter-list"></div>
           <div class="filter-add">
-            <input type="text" id="newTypeAr" placeholder="اسم النوع بالعربية">
-            <input type="text" id="newTypeEn" placeholder="اسم النوع بالإنجليزية">
-            <input type="text" id="newTypeKey" placeholder="المفتاح (مثال: hoodie)">
-            <button type="button" class="admin-btn admin-btn-edit" id="addTypeBtn">إضافة نوع</button>
+            <input type="text" id="newTypeAr" placeholder="Ø§Ø³Ù… Ø§Ù„Ù†ÙˆØ¹ Ø¨Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©">
+            <input type="text" id="newTypeEn" placeholder="Ø§Ø³Ù… Ø§Ù„Ù†ÙˆØ¹ Ø¨Ø§Ù„Ø¥Ù†Ø¬Ù„ÙŠØ²ÙŠØ©">
+            <input type="text" id="newTypeKey" placeholder="Ø§Ù„Ù…ÙØªØ§Ø­ (Ù…Ø«Ø§Ù„: hoodie)">
+            <button type="button" class="admin-btn admin-btn-edit" id="addTypeBtn">Ø¥Ø¶Ø§ÙØ© Ù†ÙˆØ¹</button>
           </div>
         </div>
       </div>
       <div class="filter-actions">
-        <button type="button" class="admin-btn admin-btn-edit" id="saveFiltersBtn">حفظ التغييرات</button>
-        <button type="button" class="admin-btn admin-btn-delete" id="resetFiltersBtn">إعادة تعيين</button>
+        <button type="button" class="admin-btn admin-btn-edit" id="saveFiltersBtn">Ø­ÙØ¸ Ø§Ù„ØªØºÙŠÙŠØ±Ø§Øª</button>
+        <button type="button" class="admin-btn admin-btn-delete" id="resetFiltersBtn">Ø¥Ø¹Ø§Ø¯Ø© ØªØ¹ÙŠÙŠÙ†</button>
       </div>
     </div>
   </main>
@@ -51,20 +51,21 @@
   <div class="menu-overlay" id="menuOverlay"></div>
   <aside class="side-menu" id="sideMenu">
     <div class="side-menu-header">Admin</div>
-    <a href="admin.html">الرائيسية</a>
-    <a href="admin-products.html">المنتجات</a>
-    <a href="admin-orders.html">الطلبات</a>
-    <a href="admin-roles.html">الصلاحيات</a>
-    <a href="admin-translations.html">الترجمة</a>
-    <a href="admin-coupons.html">كوبونات</a>
-    <a href="admin-sales.html">المبيعات</a>
-    <a href="admin-comments.html">التعليقات</a>
-    <a href="admin-hero.html">الواجهة</a>
-    <a href="admin-filters.html">الفلاتر</a>
-    <a href="admin-site.html">إعدادات الموقع</a>
-    <a href="admin-password.html">كلمة المرور</a>
-    <button type="button" class="side-logout" id="adminLogoutBtn">تسجيل الخروج</button>
+    <a href="admin.html">Ø§Ù„Ø±Ø§Ø¦ÙŠØ³ÙŠØ©</a>
+    <a href="admin-products.html">Ø§Ù„Ù…Ù†ØªØ¬Ø§Øª</a>
+    <a href="admin-orders.html">Ø§Ù„Ø·Ù„Ø¨Ø§Øª</a>
+    <a href="admin-roles.html">Ø§Ù„ØµÙ„Ø§Ø­ÙŠØ§Øª</a>
+    <a href="admin-translations.html">Ø§Ù„ØªØ±Ø¬Ù…Ø©</a>
+    <a href="admin-coupons.html">ÙƒÙˆØ¨ÙˆÙ†Ø§Øª</a>
+    <a href="admin-sales.html">Ø§Ù„Ù…Ø¨ÙŠØ¹Ø§Øª</a>
+    <a href="admin-comments.html">Ø§Ù„ØªØ¹Ù„ÙŠÙ‚Ø§Øª</a>
+    <a href="admin-hero.html">Ø§Ù„ÙˆØ§Ø¬Ù‡Ø©</a>
+    <a href="admin-filters.html">Ø§Ù„ÙÙ„Ø§ØªØ±</a>
+    <a href="admin-site.html">Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª Ø§Ù„Ù…ÙˆÙ‚Ø¹</a>
+    <a href="admin-password.html">ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ±</a>
+    <button type="button" class="side-logout" id="adminLogoutBtn">ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø®Ø±ÙˆØ¬</button>
   </aside>
-  <script src="text-fix.js?v=20260221e"></script>
+  
 </body>
 </html>
+
