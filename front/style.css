@@ -73,8 +73,8 @@ body.site-dark .filter-btn {
 body.site-dark .tab-btn.active,
 body.site-dark .filter-btn.active,
 body.site-dark .tab-btn.is-active {
-  background: #d4af37 !important;
-  color: #111111 !important;
+  background: #111111 !important;
+  color: #d4af37 !important;
   border-color: #d4af37 !important;
 }
 
@@ -602,6 +602,16 @@ body.admin-dark .track-link,
 body.admin-dark .side-logout {
   background: #d4af37 !important;
   color: #111111 !important;
+  border-color: #d4af37 !important;
+}
+
+body.admin-dark .tab-btn.active,
+body.admin-dark .tab-btn.is-active,
+body.admin-dark .filter-btn.active,
+body.admin-dark .admin-btn.active,
+body.admin-dark .order-status-select:focus {
+  background: #111111 !important;
+  color: #d4af37 !important;
   border-color: #d4af37 !important;
 }
 
