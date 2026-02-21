@@ -55,6 +55,15 @@
             <label class="pay-opt"><input type="radio" name="paymentMethod" value="paymob"> <span>Paymob</span></label>
             <label class="pay-opt"><input type="radio" name="paymentMethod" value="paypal"> <span>PayPal</span></label>
           </div>
+          <p id="paymentMsg" class="field-error" style="display:none;margin-top:8px"></p>
+        </div>
+        <div class="form-group">
+          <label for="couponCodeInput">كوبون الخصم</label>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <input type="text" id="couponCodeInput" placeholder="اكتب كود الخصم">
+            <button type="button" class="admin-btn admin-btn-edit" id="applyCouponBtn">تطبيق الكوبون</button>
+          </div>
+          <p id="couponMsg" class="field-error" style="display:none;margin-top:8px"></p>
         </div>
         <button type="submit" class="submit-order-btn" data-i18n-cart="confirm_order">تأكيد الطلب</button>
       </form>
