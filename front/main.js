@@ -322,21 +322,73 @@ function render(products) {
   });
 }
 
-function getProductImages(product) {
-  const list = (product.images && product.images.length ? product.images : [product.image]).filter(Boolean);
-  if (!list.length) return ["https://via.placeholder.com/800x1000?text=Product"];
-  return list.map((img) => (img.startsWith("/uploads") ? BACKEND + img : img));
+function normalizeMediaSource(src) {
+  const value = String(src || "").trim();
+  if (!value) return "";
+  return value.startsWith("/uploads") ? BACKEND + value : value;
+}
+
+function isVideoSource(src) {
+  const value = String(src || "").toLowerCase().split("?")[0];
+  return value.endsWith(".mp4") || value.endsWith(".webm") || value.endsWith(".ogg") || value.endsWith(".mov");
+}
+
+function getProductMedia(product) {
+  const images = (product.images && product.images.length ? product.images : [product.image])
+    .map(normalizeMediaSource)
+    .filter(Boolean)
+    .map((src) => ({ type: "image", src }));
+  const videos = (product.videos && product.videos.length ? product.videos : [product.video])
+    .map(normalizeMediaSource)
+    .filter(Boolean)
+    .map((src) => ({ type: "video", src }));
+  const list = [...images, ...videos];
+  if (!list.length) {
+    return [{ type: "image", src: "https://via.placeholder.com/800x1000?text=Product" }];
+  }
+  return list;
 }
 
 function renderModalImage() {
   const modalImage = document.getElementById("modalImage");
+  const modalVideo = document.getElementById("modalVideo");
   if (!modalImage) return;
-  modalImage.src = modalImages[modalImageIndex] || "";
+  const item = modalImages[modalImageIndex];
+  if (!item) return;
+  const media = typeof item === "string"
+    ? { type: isVideoSource(item) ? "video" : "image", src: item }
+    : item;
+
+  if (media.type === "video") {
+    if (modalVideo) {
+      modalVideo.style.display = "";
+      modalVideo.src = media.src || "";
+      modalVideo.currentTime = 0;
+      modalVideo.load();
+    }
+    modalImage.style.display = "none";
+    modalImage.src = "";
+  } else {
+    if (modalVideo) {
+      modalVideo.pause();
+      modalVideo.style.display = "none";
+      modalVideo.removeAttribute("src");
+      modalVideo.load();
+    }
+    modalImage.style.display = "";
+    modalImage.src = media.src || "";
+  }
 }
 
 function closeProductModal() {
   const modal = document.getElementById("productModal");
   if (!modal) return;
+  const modalVideo = document.getElementById("modalVideo");
+  if (modalVideo) {
+    modalVideo.pause();
+    modalVideo.removeAttribute("src");
+    modalVideo.load();
+  }
   if (modal.contains(document.activeElement)) {
     document.activeElement.blur();
   }
@@ -357,7 +409,7 @@ function openProductModal(product) {
     window.trackAnalyticsEvent("view_product", { productId: product._id, name: product.name });
   }
   lastFocusedBeforeModal = document.activeElement;
-  modalImages = getProductImages(product);
+  modalImages = getProductMedia(product);
   modalImageIndex = 0;
 
   const modalTitle = document.getElementById("modalTitle");

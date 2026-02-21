@@ -274,6 +274,10 @@ productForm.addEventListener("submit", async (e) => {
   for (let i = 0; i < files.length; i++) {
     formData.append("images", files[i]);
   }
+  const videoFiles = document.getElementById("videos")?.files || [];
+  for (let i = 0; i < videoFiles.length; i++) {
+    formData.append("videos", videoFiles[i]);
+  }
 
   const url = id ? `${API}/products/${id}` : `${API}/products`;
   const method = id ? "PUT" : "POST";

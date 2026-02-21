@@ -160,7 +160,7 @@ app.use((err, req, res, next) => {
     return res.status(400).json({ error: `File upload error${field}: ${err.message}` });
   }
   if (err && err.message === "Invalid file type") {
-    return res.status(400).json({ error: "Invalid file type. Only images are allowed." });
+    return res.status(400).json({ error: "Invalid file type. Only images/videos are allowed." });
   }
   return next(err);
 });

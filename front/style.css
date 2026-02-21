@@ -696,11 +696,16 @@ body.admin-dark .order-status-select:focus {
   padding: 0 1rem 1rem;
 }
 
-.product-modal-media img {
+.product-modal-media img,
+.product-modal-media video {
   width: 100%;
   border-radius: 12px;
   object-fit: cover;
   aspect-ratio: 4 / 5;
+}
+
+.product-modal-media video {
+  background: #000;
 }
 
 .product-modal-media {

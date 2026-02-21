@@ -14,7 +14,9 @@ const ProductSchema = new mongoose.Schema({
   ratingsCount: { type: Number, default: 0 },
   // أول صورة أساسية، مع إمكانية تخزين أكثر من صورة
   image: String,
-  images: [String]
+  images: [String],
+  video: String,
+  videos: [String]
 });
 
 module.exports = mongoose.model("Product", ProductSchema);
