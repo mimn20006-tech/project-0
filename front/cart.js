@@ -10,6 +10,10 @@ let appliedCouponCode = "";
 let appliedCouponDiscount = 0;
 let appliedCouponFinalTotal = 0;
 
+function formatMoney(value) {
+  return `${Number(value || 0).toFixed(0)} ${t("currency")}`;
+}
+
 function t(key) {
   const dict = {
     ar: {
@@ -99,6 +103,7 @@ function resetCouponState() {
   appliedCouponDiscount = 0;
   appliedCouponFinalTotal = 0;
   showCouponMsg("");
+  renderCheckoutSummary();
 }
 
 function setCart(cart) {
@@ -115,12 +120,35 @@ function updateCartCount() {
   el.textContent = getCart().reduce((sum, i) => sum + Number(i.quantity || 0), 0);
 }
 
+function markSelectedPaymentCard() {
+  const form = document.getElementById("orderForm");
+  if (!form) return;
+  form.querySelectorAll(".pay-opt").forEach((label) => {
+    const input = label.querySelector("input[name='paymentMethod']");
+    label.classList.toggle("is-selected", !!input?.checked);
+  });
+}
+
+function renderCheckoutSummary() {
+  const subtotalEl = document.getElementById("subtotalBeforeDiscount");
+  const discountEl = document.getElementById("discountAmount");
+  const totalAfterEl = document.getElementById("totalAfterDiscount");
+  if (!subtotalEl || !discountEl || !totalAfterEl) return;
+  const subtotal = getCartSubtotal();
+  const discount = Number(appliedCouponDiscount || 0);
+  const finalTotal = appliedCouponCode ? Number(appliedCouponFinalTotal || 0) : subtotal;
+  subtotalEl.textContent = formatMoney(subtotal);
+  discountEl.textContent = formatMoney(discount);
+  totalAfterEl.textContent = formatMoney(finalTotal);
+}
+
 function bindPaymentGuard() {
   const form = document.getElementById("orderForm");
   if (!form || form.dataset.paymentGuardBound === "1") return;
   form.dataset.paymentGuardBound = "1";
   form.querySelectorAll("input[name='paymentMethod']").forEach((radio) => {
     radio.addEventListener("change", () => {
+      markSelectedPaymentCard();
       if (radio.value !== "cash_on_delivery" && radio.checked) {
         showPaymentMsg(t("payment_unavailable"));
       } else if (radio.checked) {
@@ -128,14 +156,14 @@ function bindPaymentGuard() {
       }
     });
   });
+  markSelectedPaymentCard();
 }
 
-async function applyCoupon() {
-  const input = document.getElementById("couponCodeInput");
-  const code = String(input?.value || "").trim();
-  if (!code) {
+async function validateCouponCode(code, showSuccessMessage = true) {
+  const normalized = String(code || "").trim();
+  if (!normalized) {
     showCouponMsg(currentLang === "ar" ? "اكتب كود الخصم أولاً." : "Enter coupon code first.");
-    return;
+    return false;
   }
   const token = localStorage.getItem("auth_token");
   const res = await fetch(`${API}/coupons/validate`, {
@@ -144,7 +172,7 @@ async function applyCoupon() {
       "Content-Type": "application/json",
       ...(token ? { Authorization: `Bearer ${token}` } : {})
     },
-    body: JSON.stringify({ code, subtotal: getCartSubtotal() })
+    body: JSON.stringify({ code: normalized, subtotal: getCartSubtotal() })
   });
   if (!res.ok) {
     let msg = t("coupon_failed");
@@ -154,13 +182,29 @@ async function applyCoupon() {
     } catch {}
     resetCouponState();
     showCouponMsg(msg, false);
-    return;
+    return false;
   }
   const data = await res.json();
-  appliedCouponCode = data.code || code;
+  appliedCouponCode = data.code || normalized;
   appliedCouponDiscount = Number(data.discount || 0);
   appliedCouponFinalTotal = Number(data.finalTotal || 0);
-  showCouponMsg(`${t("coupon_applied")}: ${appliedCouponCode} (-${appliedCouponDiscount.toFixed(0)} ${t("currency")})`, true);
+  if (showSuccessMessage) {
+    showCouponMsg(`${t("coupon_applied")}: ${appliedCouponCode} (-${appliedCouponDiscount.toFixed(0)} ${t("currency")})`, true);
+  } else {
+    showCouponMsg("");
+  }
+  renderCheckoutSummary();
+  return true;
+}
+
+async function applyCoupon() {
+  const input = document.getElementById("couponCodeInput");
+  const code = String(input?.value || "").trim();
+  if (!code) {
+    showCouponMsg(currentLang === "ar" ? "اكتب كود الخصم أولاً." : "Enter coupon code first.");
+    return;
+  }
+  await validateCouponCode(code, true);
 }
 
 function bindCouponButton() {
@@ -257,6 +301,7 @@ function renderCart() {
     checkoutForm.style.display = "block";
     bindPaymentGuard();
     bindCouponButton();
+    renderCheckoutSummary();
   });
 }
 
@@ -295,8 +340,11 @@ document.getElementById("orderForm").addEventListener("submit", async (e) => {
     return;
   }
   if (couponInput && (!appliedCouponCode || appliedCouponCode.toLowerCase() !== couponInput.toLowerCase())) {
-    alert(t("coupon_required_apply"));
-    return;
+    const ok = await validateCouponCode(couponInput, true);
+    if (!ok) {
+      alert(t("coupon_required_apply"));
+      return;
+    }
   }
 
   const total = appliedCouponCode ? appliedCouponFinalTotal : subtotal;
@@ -405,6 +453,7 @@ updateCartCount();
 applyLang(localStorage.getItem("lang") || "ar");
 bindPaymentGuard();
 bindCouponButton();
+renderCheckoutSummary();
 prefillProfile();
 
 const langToggle = document.getElementById("langToggle");

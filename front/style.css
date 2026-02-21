@@ -936,6 +936,12 @@ body.modal-open {
   margin-top: 0.2rem;
 }
 
+.variant-label {
+  margin-top: 0.5rem !important;
+  font-weight: 700;
+  color: var(--text) !important;
+}
+
 .footer {
   text-align: center;
   padding: 1.5rem 1rem;
@@ -1178,6 +1184,61 @@ body.modal-open {
 .form-group input:focus {
   outline: none;
   border-color: var(--accent);
+}
+
+.payment-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.6rem;
+}
+
+.pay-opt {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid #d4af37;
+  background: #d4af37;
+  color: #111111;
+  border-radius: 12px;
+  padding: 0.6rem 0.7rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.pay-opt input[type="radio"] {
+  accent-color: #111111;
+}
+
+.pay-opt.is-selected {
+  background: #111111;
+  color: #d4af37;
+  border-color: #d4af37;
+}
+
+.checkout-summary-box {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0.7rem 0.85rem;
+  background: var(--surface-muted);
+}
+
+.checkout-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.checkout-line strong {
+  color: var(--text);
+}
+
+.checkout-line.total-after {
+  margin-top: 0.4rem;
+  padding-top: 0.4rem;
+  border-top: 1px dashed var(--border);
 }
 
 .submit-order-btn {

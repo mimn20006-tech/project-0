@@ -217,14 +217,13 @@ function render(products) {
       return value || "-";
     };
     const sizes = (p.sizes && p.sizes.length)
-      ? `<div class="size-pills" data-id="${p._id}">
+      ? `<div class="meta variant-label">${currentLang === "ar" ? "المقاسات" : "Sizes"}</div>
+         <div class="size-pills" data-id="${p._id}">
            ${p.sizes.map((s, idx) => `<button type="button" class="size-pill${idx === 0 ? " active" : ""}" data-size="${escapeHtml(s)}" aria-label="${escapeHtml(s)}">${escapeHtml(s)}</button>`).join("")}
          </div>`
       : "";
     const colors = (p.colors && p.colors.length)
-      ? `<div class="color-row">
-          ${p.colors.map(c => `<span class="color-dot" title="${escapeHtml(c)}" style="--swatch:${resolveColorValue(c)}"></span>`).join("")}
-        </div>
+      ? `<div class="meta variant-label">${currentLang === "ar" ? "الألوان" : "Colors"}</div>
         <div class="color-pills" data-id="${p._id}">
           ${p.colors.map((c, idx) => `<button type="button" class="color-pill${idx === 0 ? " active" : ""}" data-color="${escapeHtml(c)}" title="${escapeHtml(c)}" style="--swatch:${resolveColorValue(c)}" aria-label="${escapeHtml(c)}"></button>`).join("")}
         </div>`

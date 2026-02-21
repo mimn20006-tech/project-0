@@ -57,6 +57,14 @@
           </div>
           <p id="paymentMsg" class="field-error" style="display:none;margin-top:8px"></p>
         </div>
+
+        <div class="form-group checkout-summary-box">
+          <div class="checkout-line">
+            <span>المجموع قبل الخصم</span>
+            <strong id="subtotalBeforeDiscount">0 جنيه</strong>
+          </div>
+        </div>
+
         <div class="form-group">
           <label for="couponCodeInput">كوبون الخصم</label>
           <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
@@ -65,6 +73,18 @@
           </div>
           <p id="couponMsg" class="field-error" style="display:none;margin-top:8px"></p>
         </div>
+
+        <div class="form-group checkout-summary-box">
+          <div class="checkout-line">
+            <span>الخصم</span>
+            <strong id="discountAmount">0 جنيه</strong>
+          </div>
+          <div class="checkout-line total-after">
+            <span>المجموع بعد الخصم</span>
+            <strong id="totalAfterDiscount">0 جنيه</strong>
+          </div>
+        </div>
+
         <button type="submit" class="submit-order-btn" data-i18n-cart="confirm_order">تأكيد الطلب</button>
       </form>
     </div>
