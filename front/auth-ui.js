@@ -101,7 +101,47 @@ function bindSelectAnim() {
   });
 }
 
+function applySiteTheme(isDark) {
+  document.body.classList.toggle("site-dark", !!isDark);
+  const btn = document.getElementById("themeToggle");
+  if (btn) btn.textContent = isDark ? "☀" : "🌙";
+}
+
+function ensureThemeToggle() {
+  if (document.getElementById("themeToggle")) return;
+  const actions = document.querySelector(".header-actions");
+  if (!actions) return;
+  const langBtn = document.getElementById("langToggle");
+  const btn = document.createElement("button");
+  btn.className = "icon-btn theme-btn";
+  btn.id = "themeToggle";
+  btn.type = "button";
+  btn.setAttribute("aria-label", "الوضع الداكن");
+  btn.textContent = "🌙";
+  if (langBtn && langBtn.parentElement === actions) {
+    actions.insertBefore(btn, langBtn);
+  } else {
+    actions.appendChild(btn);
+  }
+}
+
+function initSiteTheme() {
+  const key = "site_dark_mode";
+  ensureThemeToggle();
+  const isDark = localStorage.getItem(key) === "1";
+  applySiteTheme(isDark);
+  const btn = document.getElementById("themeToggle");
+  if (!btn || btn.dataset.themeBound === "1") return;
+  btn.dataset.themeBound = "1";
+  btn.addEventListener("click", () => {
+    const nowDark = !document.body.classList.contains("site-dark");
+    localStorage.setItem(key, nowDark ? "1" : "0");
+    applySiteTheme(nowDark);
+  });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
+  initSiteTheme();
   applyGlobalLang();
   updateAuthUI();
   bindMenu();

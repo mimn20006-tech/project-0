@@ -41,6 +41,43 @@ body.site-dark {
   --accent-alt-soft: rgba(88,166,255,0.16);
 }
 
+body.site-dark .icon-btn {
+  color: #d4af37;
+  border-color: #d4af37;
+  background: transparent;
+}
+
+body.site-dark .icon-btn:hover {
+  background: rgba(212,175,55,0.14);
+}
+
+body.site-dark button:not(.color-pill):not(.size-pill):not(.modal-image-nav),
+body.site-dark .track-link,
+body.site-dark .product-modal-cart,
+body.site-dark .admin-btn,
+body.site-dark .checkout-btn,
+body.site-dark .submit-order-btn,
+body.site-dark .rate-btn,
+body.site-dark .modal-add-btn,
+body.site-dark .side-logout {
+  background: #d4af37 !important;
+  color: #111111 !important;
+  border-color: #d4af37 !important;
+}
+
+body.site-dark .tab-btn,
+body.site-dark .filter-btn {
+  border-color: #d4af37;
+}
+
+body.site-dark .tab-btn.active,
+body.site-dark .filter-btn.active,
+body.site-dark .tab-btn.is-active {
+  background: #d4af37 !important;
+  color: #111111 !important;
+  border-color: #d4af37 !important;
+}
+
 img {
   max-width: 100%;
   height: auto;
@@ -547,6 +584,25 @@ body.admin-dark {
   --text: #d4af37;
   --muted: #c9b47a;
   --border: #2e3a4a;
+}
+
+body.admin-dark .icon-btn {
+  color: #d4af37;
+  border-color: #d4af37;
+  background: transparent;
+}
+
+body.admin-dark .icon-btn:hover {
+  background: rgba(212,175,55,0.14);
+}
+
+body.admin-dark button,
+body.admin-dark .admin-btn,
+body.admin-dark .track-link,
+body.admin-dark .side-logout {
+  background: #d4af37 !important;
+  color: #111111 !important;
+  border-color: #d4af37 !important;
 }
 
 .rating-row {

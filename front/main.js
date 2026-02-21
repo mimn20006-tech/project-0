@@ -256,7 +256,6 @@ function render(products) {
         <p class="price">${Number(p.price).toFixed(0)} ${t("currency")}</p>
         <p class="stock">${t("available")}: ${left}</p>
         <p class="meta">${t("type_label")}: ${typeLabel(p.type)}</p>
-        <p class="meta">${t("colors_label")} ${(p.colors && p.colors.length) ? p.colors.join(", ") : "-"}</p>
         ${colors}
         ${sizes}
         ${ratingHtml}
@@ -569,7 +568,8 @@ function initTheme() {
   const isDark = localStorage.getItem(key) === "1";
   applyTheme(isDark);
   const btn = document.getElementById("themeToggle");
-  if (btn) {
+  if (btn && btn.dataset.themeBound !== "1") {
+    btn.dataset.themeBound = "1";
     btn.addEventListener("click", () => {
       const nowDark = !document.body.classList.contains("site-dark");
       localStorage.setItem(key, nowDark ? "1" : "0");
