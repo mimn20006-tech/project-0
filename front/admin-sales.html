@@ -1,0 +1,78 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تقارير المبيعات | Hand Aura</title>
+  <link rel="stylesheet" href="style.css?v=20260214">
+</head>
+<body class="center-page">
+  <header class="admin-topbar">
+    <div class="admin-topbar-inner">
+      <button class="icon-btn menu-btn" aria-label="القائمة">☰</button>
+      <div class="admin-brand">Hand Aura | تقارير المبيعات</div>
+      <a href="index.html" class="admin-back">المتجر</a>
+    </div>
+  </header>
+
+  <main class="main center-main">
+    <div class="admin-section">
+      <h2>لوحة التحليلات</h2>
+      <p style="color:var(--muted);margin-bottom:10px">اختر فترة زمنية ثم اضغط تحديث.</p>
+      <form id="reportFilterForm" class="filter-actions">
+        <input type="date" id="reportFrom">
+        <input type="date" id="reportTo">
+        <button type="submit" class="admin-btn admin-btn-edit">تحديث</button>
+        <button type="button" class="admin-btn admin-btn-edit" id="exportExcelBtn">تصدير Excel</button>
+        <button type="button" class="admin-btn admin-btn-edit" id="exportPdfBtn">تصدير PDF</button>
+      </form>
+
+      <div id="salesSummary"></div>
+
+      <h3 style="margin-top:1rem">مخطط الإيراد اليومي</h3>
+      <div id="revenueChart"></div>
+
+      <h3 style="margin-top:1rem">أفضل المنتجات</h3>
+      <div id="topProductsWrap"></div>
+
+      <h3 style="margin-top:1rem">الأداء اليومي</h3>
+      <div id="dailyWrap"></div>
+
+      <h3 style="margin-top:1rem">تنبيهات المخزون</h3>
+      <div id="lowStockWrap"></div>
+
+      <h3 style="margin-top:1rem">السلال المتروكة</h3>
+      <div class="filter-actions">
+        <input type="number" id="delayMinutes" min="5" value="60" placeholder="تأخير بالدقائق">
+        <button type="button" class="admin-btn admin-btn-edit" id="sendRemindersBtn">إرسال تذكيرات</button>
+      </div>
+      <div id="abandonedWrap"></div>
+
+      <h3 style="margin-top:1rem">منتجات تضاف للسلة بدون شراء</h3>
+      <div id="cartIntentWrap"></div>
+    </div>
+  </main>
+
+  <div class="menu-overlay" id="menuOverlay"></div>
+  <aside class="side-menu" id="sideMenu">
+    <div class="side-menu-header">Admin</div>
+    <a href="admin.html">الرئيسية</a>
+    <a href="admin-products.html">المنتجات</a>
+    <a href="admin-orders.html">الطلبات</a>
+    <a href="admin-roles.html">الصلاحيات</a>
+    <a href="admin-translations.html">الترجمة</a>
+    <a href="admin-coupons.html">الكوبونات</a>
+    <a href="admin-sales.html">التقارير</a>
+    <a href="admin-comments.html">التعليقات</a>
+    <a href="admin-hero.html">الواجهة</a>
+    <a href="admin-filters.html">الفلاتر</a>
+    <a href="admin-site.html">إعدادات الموقع</a>
+    <a href="admin-password.html">كلمة المرور</a>
+    <button type="button" class="side-logout" id="adminLogoutBtn">تسجيل الخروج</button>
+  </aside>
+
+  <script src="admin-sales.js?v=20260221"></script>
+</body>
+</html>
+
+

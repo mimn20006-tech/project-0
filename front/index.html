@@ -1,0 +1,202 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="متجر Hand Aura للملابس.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Hand Aura">
+  <meta property="og:description" content="متجر Hand Aura للملابس.">
+  <meta property="og:image" content="">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Hand Aura">
+  <meta name="twitter:description" content="متجر Hand Aura للملابس.">
+  <meta name="twitter:image" content="">
+  <link rel="canonical" href="https://hand-aura-production.up.railway.app/index.html">
+  <title>Hand Aura</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"Store",
+    "name":"Hand Aura",
+    "url":"https://hand-aura-production.up.railway.app/index.html",
+    "description":"متجر Hand Aura للملابس",
+    "potentialAction":{
+      "@type":"SearchAction",
+      "target":"https://hand-aura-production.up.railway.app/index.html?q={search_term_string}",
+      "query-input":"required name=search_term_string"
+    }
+  }
+  </script>
+</head>
+<body>
+  <header class="header">
+    <div class="header-top">
+      <button class="icon-btn menu-btn" aria-label="القائمة">&#9776;</button>
+      <a href="index.html" class="logo">Hand Aura</a>
+      <div class="header-actions">
+        <a href="track.html" class="track-link">تتبع الطلب</a>
+        <a href="login.html" class="track-link auth-link" data-auth="guest">تسجيل الدخول</a>
+        <a href="register.html" class="track-link auth-link" data-auth="guest">إنشاء حساب</a>
+        <span class="user-badge" data-auth="user"></span>
+        <a href="cart.html" class="icon-btn cart-btn" title="السلة">
+          &#128722;
+          <span id="cartCount">0</span>
+        </a>
+        <button class="icon-btn theme-btn" id="themeToggle" type="button" aria-label="الوضع الداكن">🌙</button>
+        <button class="icon-btn lang-btn" id="langToggle" type="button">AR</button>
+      </div>
+    </div>
+
+    <div class="header-bottom">
+      <div class="header-controls">
+        <select class="control categories-select" id="typeFilter">
+          <option value="">كل الأنواع</option>
+        </select>
+        <select class="control categories-select" id="sortFilter">
+          <option value="default">الترتيب</option>
+          <option value="rating_desc">الأعلى تقييمًا</option>
+          <option value="rating_asc">الأقل تقييمًا</option>
+          <option value="price_asc">السعر: الأقل أولًا</option>
+          <option value="price_desc">السعر: الأعلى أولًا</option>
+        </select>
+        <div class="search-box">
+          <input type="search" id="searchInput" placeholder="ابحث باسم المنتج...">
+        </div>
+      </div>
+      <div class="header-tabs">
+        <button class="tab-btn filter-btn active" data-cat="">الكل</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+    <section class="hero">
+      <div class="hero-text">
+        <p class="hero-tagline" id="heroTagline">أفضل القطع هنا فقط</p>
+        <h1 class="hero-title" id="heroTitle">Hand Aura</h1>
+        <div class="hero-card" id="heroCta">
+          <div class="hero-card-main">
+            <span>اسحب</span>
+            <span class="arrow">&rarr;</span>
+          </div>
+          <span class="hero-card-sub">اكتشف الآن</span>
+        </div>
+      </div>
+      <div class="hero-image-wrap">
+        <img class="hero-image" id="heroImage" src="" alt="Hand Aura">
+      </div>
+    </section>
+
+    <section class="products-section" id="explore">
+      <h2 class="section-title">استكشف المجموعة</h2>
+      <div class="filters">
+        <button class="filter-btn active" data-cat="">الكل</button>
+      </div>
+      <div id="products" class="products"></div>
+    </section>
+
+    <div class="product-modal" id="productModal" aria-hidden="true">
+      <div class="product-modal-overlay" data-close="true"></div>
+      <div class="product-modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="product-modal-top">
+          <a class="product-modal-cart" id="modalCartBtn" href="cart.html">السلة</a>
+          <button class="product-modal-close" type="button" aria-label="إغلاق" data-close="true">X</button>
+        </div>
+        <div class="product-modal-body">
+          <div class="product-modal-media">
+            <button type="button" class="modal-image-nav prev" id="modalPrevImage" aria-label="السابق">‹</button>
+            <img id="modalImage" alt="">
+            <button type="button" class="modal-image-nav next" id="modalNextImage" aria-label="التالي">›</button>
+          </div>
+          <div class="product-modal-info">
+            <h3 id="modalTitle"></h3>
+            <p class="modal-price" id="modalPrice"></p>
+            <p class="modal-desc" id="modalDesc"></p>
+            <p class="modal-stock" id="modalStock"></p>
+            <p class="modal-type" id="modalType"></p>
+            <div class="modal-block" id="modalSizes"></div>
+            <div class="modal-block" id="modalColors"></div>
+            <div class="modal-block" id="modalRecommendations"></div>
+            <div class="modal-block" id="modalRating"></div>
+            <div class="modal-comments">
+              <div class="modal-label">التعليقات</div>
+              <div id="modalComments" class="modal-comments-list"></div>
+              <div class="comment-form" id="modalCommentForm">
+                <textarea id="modalCommentInput" rows="2" placeholder="اكتب تعليقًا..."></textarea>
+                <button type="button" id="modalCommentBtn">إرسال</button>
+                <div class="comment-msg" id="modalCommentMsg"></div>
+              </div>
+            </div>
+            <div class="product-modal-actions">
+              <button class="add-btn modal-add-btn" id="modalAddBtn" type="button"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-brand">
+      <div class="footer-logo">HA</div>
+      <div>
+        <div class="footer-site-name">Hand Aura</div>
+        <div class="footer-site-sub">متجر الملابس</div>
+      </div>
+    </div>
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>بيانات المطور</h4>
+        <p>الإيميل:
+          <a href="mailto:m.imn20004@gmail.com">m.imn20004@gmail.com</a>
+        </p>
+        <p>الهاتف:
+          <a href="tel:01025457419">01025457419</a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <h4>بيانات الموقع</h4>
+        <p>إيميل الموقع:
+          <a href="mailto:1handaura1@gmail.com">1handaura1@gmail.com</a>
+        </p>
+        <p>رقم الموقع:
+          <a href="tel:01035692751">01035692751</a>
+        </p>
+      </div>
+      <div class="footer-col footer-qr">
+        <h4>QR</h4>
+        <a id="qrLink" href="#" target="_blank" rel="noopener">
+          <img id="qrImage" alt="Hand Aura QR" width="130" height="130">
+        </a>
+      </div>
+    </div>
+    <p class="footer-copy">&copy; 2025 Hand Aura Store. جميع الحقوق محفوظة.</p>
+  </footer>
+
+  <div class="menu-overlay" id="menuOverlay"></div>
+  <aside class="side-menu" id="sideMenu">
+    <div class="side-menu-header">Hand Aura</div>
+    <a href="index.html" data-i18n-global="home">الرئيسية</a>
+    <a href="track.html" data-i18n-global="track">تتبع الطلب</a>
+    <a href="cart.html" data-i18n-global="cart">السلة</a>
+    <a href="orders.html" data-i18n-global="orders">سجل الطلبات</a>
+    <a href="policies.html" data-i18n-global="policies">السياسات</a>
+    <a href="invoice.html" data-i18n-global="invoice">الفاتورة</a>
+    <a href="login.html" data-auth="guest" data-i18n-global="login">تسجيل الدخول</a>
+    <a href="register.html" data-auth="guest" data-i18n-global="signup">إنشاء حساب</a>
+    <a href="profile.html" data-auth="user" data-i18n-global="account">الحساب</a>
+    <button type="button" class="side-logout" id="logoutBtn" data-auth="user" data-i18n-global="logout">تسجيل الخروج</button>
+  </aside>
+
+  <script src="main.js"></script>
+  <script src="auth-ui.js"></script>
+  <script src="analytics.js"></script>
+</body>
+</html>
+
+
+
+
+

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>السياسات | Hand Aura</title>
+  <link rel="canonical" href="https://hand-aura-production.up.railway.app/policies.html">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-top">
+      <button class="icon-btn menu-btn" aria-label="القائمة">&#9776;</button>
+      <a href="index.html" class="logo">Hand Aura</a>
+      <div class="header-actions">
+        <a href="track.html" class="track-link" data-i18n-global="track">تتبع الطلب</a>
+        <button class="icon-btn lang-btn" id="langToggle" type="button">AR</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+    <section class="auth-wrap" style="max-width:860px">
+      <div class="auth-card" style="text-align:right" id="policiesWrap">
+        <h2 data-k="ship_title">سياسة الشحن</h2>
+        <p data-k="ship_body">يتم تجهيز الطلب خلال 24-72 ساعة عمل، ومدة التوصيل حسب المحافظة وشركة الشحن.</p>
+
+        <h2 style="margin-top:1rem" data-k="return_title">سياسة الاسترجاع والاستبدال</h2>
+        <p data-k="return_body">الاسترجاع أو الاستبدال خلال 14 يومًا من الاستلام بشرط سلامة المنتج وحالته الأصلية.</p>
+
+        <h2 style="margin-top:1rem" data-k="pay_title">سياسة الدفع</h2>
+        <p data-k="pay_body">نوفر الدفع عند الاستلام ووسائل الدفع الإلكتروني المتاحة. يتم تأكيد الطلب بعد نجاح عملية الدفع.</p>
+
+        <h2 style="margin-top:1rem" data-k="privacy_title">سياسة الخصوصية</h2>
+        <p data-k="privacy_body">نستخدم بيانات العميل لإتمام الطلب وتحسين الخدمة فقط، ولا تتم مشاركة البيانات مع طرف ثالث دون سبب تشغيلي.</p>
+
+        <p style="margin-top:1rem"><a href="index.html" data-k="back">الرجوع للمتجر</a></p>
+      </div>
+    </section>
+  </main>
+
+  <div class="menu-overlay" id="menuOverlay"></div>
+  <aside class="side-menu" id="sideMenu">
+    <div class="side-menu-header">Hand Aura</div>
+    <a href="index.html" data-i18n-global="home">الرئيسية</a>
+    <a href="track.html" data-i18n-global="track">تتبع الطلب</a>
+    <a href="cart.html" data-i18n-global="cart">السلة</a>
+    <a href="orders.html" data-i18n-global="orders">سجل الطلبات</a>
+    <a href="policies.html" data-i18n-global="policies">السياسات</a>
+    <a href="invoice.html" data-i18n-global="invoice">الفاتورة</a>
+    <a href="login.html" data-auth="guest" data-i18n-global="login">تسجيل الدخول</a>
+    <a href="register.html" data-auth="guest" data-i18n-global="signup">إنشاء حساب</a>
+    <a href="profile.html" data-auth="user" data-i18n-global="account">الحساب</a>
+    <button type="button" class="side-logout" id="logoutBtn" data-auth="user" data-i18n-global="logout">تسجيل الخروج</button>
+  </aside>
+
+  <script src="auth-ui.js"></script>
+  <script src="policies.js"></script>
+</body>
+</html>

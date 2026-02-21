@@ -1,0 +1,10 @@
+.env
+node_modules
+back/.env
+back/node_modules
+back/logs
+back/uploads
+back/.DS_Store
+.DS_Store
+npm-debug.log*
+*.log

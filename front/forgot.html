@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>نسيت كلمة المرور | Hand Aura</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="center-page">
+  <header class="header">
+    <div class="header-top">
+      <button class="icon-btn menu-btn" aria-label="القائمة">☰</button>
+      <a href="index.html" class="logo">Hand Aura</a>
+      <div class="header-actions">
+        <a href="login.html" class="track-link">تسجيل الدخول</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="main center-main">
+    <section class="auth-wrap">
+      <div class="auth-card">
+        <h2>نسيت كلمة المرور</h2>
+        <form id="forgotForm" novalidate>
+          <input type="email" name="email" placeholder="البريد الإلكتروني" required>
+          <button type="submit">إرسال رمز</button>
+          <p class="auth-error" id="forgotError"></p>
+        </form>
+        <p class="auth-hint">تم إرسال الرمز؟ <a href="reset.html">تغيير كلمة المرور</a></p>
+      </div>
+    </section>
+  </main>
+
+  <script src="auth.js"></script>
+  <script src="auth-ui.js"></script>
+</body>
+</html>
+
+
+
+

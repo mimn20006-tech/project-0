@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>فاتورة الطلب | Hand Aura</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-top">
+      <button class="icon-btn menu-btn" aria-label="القائمة">&#9776;</button>
+      <a href="index.html" class="logo">Hand Aura</a>
+      <div class="header-actions">
+        <a href="track.html" class="track-link" data-i18n-global="track">تتبع الطلب</a>
+        <button class="icon-btn lang-btn" id="langToggle" type="button">AR</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+    <section class="auth-wrap" style="max-width:900px">
+      <div class="auth-card" id="invoiceWrap">
+        <h2 id="invoiceTitle">فاتورة الطلب</h2>
+        <p id="invoiceHint" style="color:var(--muted)">استخدم الرابط: <code>invoice.html?orderId=...</code> ثم اضغط طباعة/حفظ PDF.</p>
+        <div id="invoiceBody"></div>
+        <button type="button" id="printBtn" style="margin-top:1rem">طباعة / حفظ PDF</button>
+      </div>
+    </section>
+  </main>
+
+  <div class="menu-overlay" id="menuOverlay"></div>
+  <aside class="side-menu" id="sideMenu">
+    <div class="side-menu-header">Hand Aura</div>
+    <a href="index.html" data-i18n-global="home">الرئيسية</a>
+    <a href="track.html" data-i18n-global="track">تتبع الطلب</a>
+    <a href="cart.html" data-i18n-global="cart">السلة</a>
+    <a href="orders.html" data-i18n-global="orders">سجل الطلبات</a>
+    <a href="policies.html" data-i18n-global="policies">السياسات</a>
+    <a href="invoice.html" data-i18n-global="invoice">الفاتورة</a>
+    <a href="login.html" data-auth="guest" data-i18n-global="login">تسجيل الدخول</a>
+    <a href="register.html" data-auth="guest" data-i18n-global="signup">إنشاء حساب</a>
+    <a href="profile.html" data-auth="user" data-i18n-global="account">الحساب</a>
+    <button type="button" class="side-logout" id="logoutBtn" data-auth="user" data-i18n-global="logout">تسجيل الخروج</button>
+  </aside>
+
+  <script src="auth-ui.js"></script>
+  <script src="invoice.js"></script>
+</body>
+</html>

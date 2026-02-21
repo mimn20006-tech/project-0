@@ -1,0 +1,8 @@
+﻿User-agent: *
+Allow: /
+
+Sitemap: https://hand-aura-production.up.railway.app/sitemap.xml
+
+
+
+

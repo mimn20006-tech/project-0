@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>إدارة المنتجات | Hand Aura</title>
+  <link rel="stylesheet" href="style.css?v=20260214">
+</head>
+<body class="center-page">
+  <header class="admin-topbar">
+    <div class="admin-topbar-inner">
+      <button class="icon-btn menu-btn" aria-label="القائمة">☰</button>
+      <div class="admin-brand">Hand Aura | إدارة المنتجات</div>
+      <a href="index.html" class="admin-back">رجوع</a>
+    </div>
+  </header>
+
+  <main class="main center-main">
+    <div class="admin-section">
+      <h2>إضافة / تعديل منتج</h2>
+      <form id="productForm" class="admin-form" enctype="multipart/form-data">
+        <input type="hidden" id="productId">
+        <input type="text" id="name" placeholder="اسم المنتج" required>
+        <input type="number" id="price" placeholder="السعر" min="0" required>
+        <input type="number" id="stock" placeholder="المخزون (0 = غير متاح)" min="0" required>
+        <select id="type"></select>
+        <input type="text" id="sizes" placeholder="الأحجام (مثال: S, M, L)">
+        <input type="text" id="colors" placeholder="الألوان (مثال: أحمر, أزرق)">
+        <textarea id="description" rows="3" placeholder="وصف المنتج"></textarea>
+        <select id="category"></select>
+        <input type="file" id="images" name="images" accept="image/*" multiple>
+        <button type="submit" id="submitProductBtn">حفظ المنتج</button>
+      </form>
+    </div>
+
+    <div class="admin-section">
+      <h2>قائمة المنتجات</h2>
+      <div id="productsTableWrap"></div>
+    </div>
+  </main>
+
+  <script src="admin.js?v=20260221"></script>
+  <div class="menu-overlay" id="menuOverlay"></div>
+  <aside class="side-menu" id="sideMenu">
+    <div class="side-menu-header">Admin</div>
+    <a href="admin.html">لوحة التحكم</a>
+    <a href="admin-products.html">المنتجات</a>
+    <a href="admin-orders.html">الطلبات</a>
+    <a href="admin-roles.html">الصلاحيات</a>
+    <a href="admin-translations.html">الترجمات</a>
+    <a href="admin-coupons.html">الكوبونات</a>
+    <a href="admin-sales.html">المبيعات</a>
+    <a href="admin-comments.html">التعليقات</a>
+    <a href="admin-hero.html">البطل</a>
+    <a href="admin-filters.html">التصفية</a>
+    <a href="admin-site.html">إعدادات الموقع</a>
+    <a href="admin-password.html">تغيير كلمة المرور</a>
+    <button type="button" class="side-logout" id="adminLogoutBtn">تسجيل الخروج</button>
+  </aside>
+</body>
+</html>

@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تغيير كلمة المرور | Hand Aura</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="center-page">
+  <header class="header">
+    <div class="header-top">
+      <button class="icon-btn menu-btn" aria-label="القائمة">☰</button>
+      <a href="index.html" class="logo">Hand Aura</a>
+      <div class="header-actions">
+        <a href="login.html" class="track-link">تسجيل الدخول</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="main center-main">
+    <section class="auth-wrap">
+      <div class="auth-card">
+        <h2>تغيير كلمة المرور</h2>
+        <form id="resetForm" novalidate>
+          <input type="email" name="email" placeholder="البريد الإلكتروني" required>
+          <input type="text" name="code" placeholder="رمز إعادة التعيين" required>
+          <input type="password" name="newPassword" placeholder="كلمة المرور الجديدة" required>
+          <button type="submit">تحديث كلمة المرور</button>
+          <p class="auth-error" id="resetError"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <script src="auth.js"></script>
+  <script src="auth-ui.js"></script>
+</body>
+</html>
+
+
+
+

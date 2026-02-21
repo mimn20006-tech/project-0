@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>إعداد Google/Apple OAuth | Hand Aura</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-top">
+      <button class="icon-btn menu-btn" aria-label="القائمة">☰</button>
+      <a href="index.html" class="logo">Hand Aura</a>
+      <div class="header-actions">
+        <a href="login.html" class="track-link">تسجيل الدخول</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+    <section class="auth-card" style="max-width:720px;margin:0 auto;">
+      <h2>إعداد تسجيل الدخول بجوجل</h2>
+      <ol>
+        <li>ادخل Google Cloud Console وأنشئ مشروع جديد.</li>
+        <li>فعّل Google Identity Services أو OAuth Consent Screen.</li>
+        <li>أنشئ OAuth Client ID (نوع Web).</li>
+        <li>أضف Authorized Redirect URI: <code>https://hand-aura-production.up.railway.app/api/oauth/google/callback</code></li>
+        <li>ضع القيم في متغيرات البيئة:
+          <pre><code>GOOGLE_CLIENT_ID=...
+GOOGLE_CLIENT_SECRET=...
+BASE_URL=https://hand-aura-production.up.railway.app</code></pre>
+        </li>
+      </ol>
+
+      <h2>إعداد تسجيل الدخول بآبل</h2>
+      <p>Apple لا يعمل على localhost — تحتاج دومين و HTTPS.</p>
+      <ol>
+        <li>سجّل في Apple Developer.</li>
+        <li>أنشئ Service ID وأضف Redirect: <code>https://your-domain.com/api/oauth/apple/callback</code></li>
+        <li>أنشئ Key (AuthKey.p8) وسجّل Team ID وKey ID.</li>
+        <li>ضع القيم في متغيرات البيئة:
+          <pre><code>APPLE_CLIENT_ID=...
+APPLE_TEAM_ID=...
+APPLE_KEY_ID=...
+APPLE_PRIVATE_KEY_FILE=C:\path\AuthKey.p8
+BASE_URL=https://your-domain.com</code></pre>
+        </li>
+      </ol>
+    </section>
+  </main>
+
+  <script src="auth-ui.js"></script>
+  <div class="menu-overlay" id="menuOverlay"></div>
+  <aside class="side-menu" id="sideMenu">
+    <div class="side-menu-header">Hand Aura</div>
+    <a href="index.html">الرئيسية</a>
+    <a href="login.html">تسجيل الدخول</a>
+  </aside>
+</body>
+</html>
+
+
+
+
+
+

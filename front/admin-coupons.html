@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>إدارة الكوبونات | Hand Aura</title>
+  <link rel="stylesheet" href="style.css?v=20260214">
+</head>
+<body class="center-page">
+  <header class="admin-topbar">
+    <div class="admin-topbar-inner">
+      <button class="icon-btn menu-btn" aria-label="القائمة">☰</button>
+      <div class="admin-brand">Hand Aura | إدارة الكوبونات</div>
+      <a href="index.html" class="admin-back">المتجر</a>
+    </div>
+  </header>
+
+  <main class="main center-main">
+    <div class="admin-section">
+      <h2>نظام الكوبونات</h2>
+      <p style="color:var(--muted);margin-bottom:10px">املأ البيانات الأساسية للكوبون ثم احفظ.</p>
+      <form id="couponForm" class="admin-form">
+        <input type="hidden" id="couponId">
+        <input type="text" id="couponCode" placeholder="كود الكوبون (مثال: SAVE10)" required>
+        <input type="text" id="couponTitle" placeholder="عنوان الكوبون" required>
+        <select id="couponType">
+          <option value="percent">نسبة مئوية %</option>
+          <option value="fixed">قيمة ثابتة</option>
+        </select>
+        <input type="number" id="couponValue" placeholder="قيمة الخصم" required>
+        <input type="number" id="couponMinOrder" placeholder="حد أدنى للطلب (اختياري)">
+        <input type="number" id="couponMaxDiscount" placeholder="حد أقصى للخصم (اختياري)">
+        <input type="number" id="couponUsageLimit" placeholder="الحد الكلي للاستخدام (0 = بدون حد)">
+        <input type="number" id="couponPerUserLimit" placeholder="الحد لكل مستخدم" value="1">
+        <label><input type="checkbox" id="couponFirstOrderOnly"> أول طلب فقط</label>
+        <label><input type="checkbox" id="couponEnabled" checked> مفعل</label>
+        <button type="submit" id="couponSubmitBtn">حفظ الكوبون</button>
+      </form>
+      <div id="couponsTableWrap"></div>
+    </div>
+  </main>
+
+  <div class="menu-overlay" id="menuOverlay"></div>
+  <aside class="side-menu" id="sideMenu">
+    <div class="side-menu-header">Admin</div>
+    <a href="admin.html">الرئيسية</a>
+    <a href="admin-products.html">المنتجات</a>
+    <a href="admin-orders.html">الطلبات</a>
+    <a href="admin-roles.html">الصلاحيات</a>
+    <a href="admin-translations.html">الترجمة</a>
+    <a href="admin-coupons.html">الكوبونات</a>
+    <a href="admin-sales.html">التقارير</a>
+    <a href="admin-comments.html">التعليقات</a>
+    <a href="admin-hero.html">الواجهة</a>
+    <a href="admin-filters.html">الفلاتر</a>
+    <a href="admin-site.html">إعدادات الموقع</a>
+    <a href="admin-password.html">كلمة المرور</a>
+    <button type="button" class="side-logout" id="adminLogoutBtn">تسجيل الخروج</button>
+  </aside>
+
+  <script src="admin-coupons.js?v=20260221"></script>
+</body>
+</html>
+
+

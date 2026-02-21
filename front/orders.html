@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>سجل الطلبات | Hand Aura</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-top">
+      <button class="icon-btn menu-btn" aria-label="القائمة">&#9776;</button>
+      <a href="index.html" class="logo">Hand Aura</a>
+      <div class="header-actions">
+        <a href="track.html" class="track-link">تتبع الطلب</a>
+        <a href="cart.html" class="icon-btn cart-btn" title="السلة">&#128722; <span id="cartCount">0</span></a>
+        <button class="icon-btn lang-btn" id="langToggle" type="button">AR</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+    <h1 class="title">سجل الطلبات</h1>
+    <div id="ordersWrap"></div>
+  </main>
+
+  <script src="orders.js"></script>
+  <script src="auth-ui.js"></script>
+
+  <div class="menu-overlay" id="menuOverlay"></div>
+  <aside class="side-menu" id="sideMenu">
+    <div class="side-menu-header">Hand Aura</div>
+    <a href="index.html" data-i18n-global="home">الرئيسية</a>
+    <a href="track.html" data-i18n-global="track">تتبع الطلب</a>
+    <a href="cart.html" data-i18n-global="cart">السلة</a>
+    <a href="orders.html" data-i18n-global="orders">سجل الطلبات</a>
+    <a href="login.html" data-auth="guest" data-i18n-global="login">تسجيل الدخول</a>
+    <a href="register.html" data-auth="guest" data-i18n-global="signup">إنشاء حساب</a>
+    <a href="profile.html" data-auth="user" data-i18n-global="account">الحساب</a>
+    <button type="button" class="side-logout" id="logoutBtn" data-auth="user" data-i18n-global="logout">تسجيل الخروج</button>
+  </aside>
+</body>
+</html>
+
+
