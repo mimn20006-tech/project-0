@@ -7,11 +7,12 @@ const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 const { requirePermission, requireAuth } = require("../middleware/auth");
+const { getUploadDir, toUploadUrl } = require("../utils/uploads");
 
 // إعداد multer لرفع الصور
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const uploadPath = path.join(__dirname, "..", "uploads");
+    const uploadPath = getUploadDir();
     fs.mkdirSync(uploadPath, { recursive: true });
     cb(null, uploadPath);
   },
@@ -100,6 +101,20 @@ router.get("/", async (req, res) => {
   res.json(products);
 });
 
+// ratings for current user (auth)
+router.get("/ratings/mine", requireAuth, async (req, res) => {
+  const userId = String(req.user.id || "");
+  const products = await Product.find({ "userRatings.userId": userId })
+    .select("_id userRatings")
+    .lean();
+  const ratings = {};
+  for (const p of products) {
+    const mine = (p.userRatings || []).find((r) => String(r.userId) === userId);
+    if (mine) ratings[String(p._id)] = Number(mine.rating || 0);
+  }
+  res.json({ ratings });
+});
+
 // get single product
 router.get("/:id", async (req, res) => {
   const product = await Product.findById(req.params.id);
@@ -147,11 +162,11 @@ router.post("/", requirePermission("product.write"), upload.fields([
     // صور مرفوعة من الفورم
     const files = [...(req.files?.images || []), ...(req.files?.["images[]"] || []), ...(req.files?.image || [])];
     if (files.length) {
-      images = files.map(f => `/uploads/${f.filename}`);
+      images = files.map(f => toUploadUrl(f.filename));
     }
     const videoFiles = [...(req.files?.videos || []), ...(req.files?.["videos[]"] || []), ...(req.files?.video || [])];
     if (videoFiles.length) {
-      videos = videoFiles.map((f) => `/uploads/${f.filename}`);
+      videos = videoFiles.map((f) => toUploadUrl(f.filename));
     }
 
     // لو تم إرسال رابط صورة واحد قديمًا
@@ -216,7 +231,7 @@ router.put("/:id", requirePermission("product.write"), upload.fields([
     // إدارة الصور: لو في صور جديدة مرفوعة، نستبدل القائمة
     const files = [...(req.files?.images || []), ...(req.files?.["images[]"] || []), ...(req.files?.image || [])];
     if (files.length) {
-      product.images = files.map(f => `/uploads/${f.filename}`);
+      product.images = files.map(f => toUploadUrl(f.filename));
       product.image = product.images[0];
     } else if (body.image) {
       // في حالة إرسال رابط صورة فقط
@@ -225,7 +240,7 @@ router.put("/:id", requirePermission("product.write"), upload.fields([
     }
     const videoFiles = [...(req.files?.videos || []), ...(req.files?.["videos[]"] || []), ...(req.files?.video || [])];
     if (videoFiles.length) {
-      product.videos = videoFiles.map((f) => `/uploads/${f.filename}`);
+      product.videos = videoFiles.map((f) => toUploadUrl(f.filename));
       product.video = product.videos[0];
     } else if (body.video) {
       product.videos = [body.video];
@@ -260,6 +275,13 @@ router.post("/:id/rate", requireAuth, async (req, res) => {
     if (!rating || rating < 1 || rating > 5) {
       return res.status(400).json({ error: "Invalid rating" });
     }
+    const userId = String(req.user.id || "");
+    product.userRatings = product.userRatings || [];
+    const existing = product.userRatings.find((entry) => String(entry.userId) === userId);
+    if (existing) {
+      return res.status(409).json({ error: "You already rated this product", rating: Number(existing.rating || 0) });
+    }
+    product.userRatings.push({ userId, rating });
     product.ratings = product.ratings || [];
     product.ratings.push(rating);
     product.ratingsCount = product.ratings.length;

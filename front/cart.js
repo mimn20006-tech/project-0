@@ -1,13 +1,40 @@
 ﻿const host = window.location.hostname;
+const isCapacitorApp = !!(window.Capacitor && (window.Capacitor.isNativePlatform ? window.Capacitor.isNativePlatform() : true));
 const isLocal = /^(localhost|127[.]0[.]0[.]1)$/i.test(host);
-const BACKEND = isLocal
-  ? "http://" + host + ":5000"
-  : "https://ecommerce-api-production-c3a5.up.railway.app";
-const API = BACKEND + "/api";
-let currentLang = "ar";
+const DEPLOY_BACKEND = "https://ecommerce-api-production-c3a5.up.railway.app";
+const LOCAL_BACKEND = "http://" + host + ":5000";
+const BACKEND = isCapacitorApp ? DEPLOY_BACKEND : (isLocal
+  ? LOCAL_BACKEND
+  : DEPLOY_BACKEND);
+const API = BACKEND + "/api";let currentLang = "ar";
+if (isLocal && !isCapacitorApp && localStorage.getItem("use_local_api") !== "0" && !window.__haFetchFallbackInstalled) {
+  const nativeFetch = window.fetch.bind(window);
+  window.fetch = async (input, init) => {
+    if (typeof input !== "string") return nativeFetch(input, init);
+    try {
+      return await nativeFetch(input, init);
+    } catch (err) {
+      if (!input.startsWith(LOCAL_BACKEND)) throw err;
+      return nativeFetch(input.replace(LOCAL_BACKEND, DEPLOY_BACKEND), init);
+    }
+  };
+  window.__haFetchFallbackInstalled = true;
+}
 let appliedCouponCode = "";
 let appliedCouponDiscount = 0;
 let appliedCouponFinalTotal = 0;
+
+function handleDeletedAccountResponse(res) {
+  if (res.status !== 404) return false;
+  localStorage.removeItem("auth_token");
+  localStorage.removeItem("auth_user");
+  localStorage.setItem(
+    "account_deleted_notice",
+    "تم حذف حسابك بواسطة الإدارة. تواصل مع خدمة العملاء، ويمكنك إنشاء حساب جديد بنفس البريد."
+  );
+  location.href = "login.html";
+  return true;
+}
 
 function formatMoney(value) {
   return `${Number(value || 0).toFixed(0)} ${t("currency")}`;
@@ -34,6 +61,8 @@ function t(key) {
       coupon_required_apply: "اضغط تطبيق الكوبون قبل تأكيد الطلب.",
       coupon_applied: "تم تطبيق الكوبون",
       coupon_failed: "الكوبون غير صالح أو غير متاح.",
+      for_delivery: "لتاكيد الطلب تواصل مع الرقم ده واتساب : 01035692751 لارسال deposit 50% من قيمة الطلب",
+      alart:"احفظ رقم الطلب لسهولة التواصل مع خدمة العملاء و تتبع طلبك",
       payment_unavailable: "طريقة الدفع دي مش شغالة دلوقتي. المتاح حاليًا: الدفع عند الاستلام فقط."
     },
     en: {
@@ -55,6 +84,7 @@ function t(key) {
       coupon_required_apply: "Please apply the coupon before confirming the order.",
       coupon_applied: "Coupon applied",
       coupon_failed: "Coupon is invalid or unavailable.",
+      for_delivery: "To confirm your order, please contact this number on WhatsApp: 01035692751 to send a 50% deposit of the order value.",
       payment_unavailable: "This payment method is currently unavailable. Only Cash on Delivery is available now."
     }
   };
@@ -148,16 +178,20 @@ function bindPaymentGuard() {
   const form = document.getElementById("orderForm");
   if (!form || form.dataset.paymentGuardBound === "1") return;
   form.dataset.paymentGuardBound = "1";
+
   form.querySelectorAll("input[name='paymentMethod']").forEach((radio) => {
     radio.addEventListener("change", () => {
       markSelectedPaymentCard();
-      if (radio.value !== "cash_on_delivery" && radio.checked) {
+      if (!radio.checked) return;
+
+      if (radio.value === "cash_on_delivery") {
+        showPaymentMsg(t("for_delivery"));
+      } else {
         showPaymentMsg(t("payment_unavailable"));
-      } else if (radio.checked) {
-        showPaymentMsg("");
       }
     });
   });
+
   markSelectedPaymentCard();
 }
 
@@ -341,11 +375,14 @@ document.getElementById("orderForm").addEventListener("submit", async (e) => {
   const paymentMethod = form.querySelector("input[name='paymentMethod']:checked")?.value || "cash_on_delivery";
   const couponInput = String(document.getElementById("couponCodeInput")?.value || "").trim();
 
-  if (paymentMethod !== "cash_on_delivery") {
-    showPaymentMsg(t("payment_unavailable"));
-    alert(t("payment_unavailable"));
-    return;
-  }
+ if (paymentMethod === "cash_on_delivery") {
+  showPaymentMsg(t("for_delivery"));
+  alert(t("لتاكيد الطلب تواصل مع الرقم ده واتساب : 01035692751 لارسال deposit 50% من قيمة الطلب احفظ رقم الطلب لسهولة التواصل مع خدمة العملاء وتتبع الطلب"));
+} else {
+  showPaymentMsg(t("payment_unavailable"));
+  alert(t("payment_unavailable"));
+}
+
   if (couponInput && (!appliedCouponCode || appliedCouponCode.toLowerCase() !== couponInput.toLowerCase())) {
     const ok = await validateCouponCode(couponInput, true);
     if (!ok) {
@@ -429,6 +466,7 @@ async function prefillProfile() {
   const token = localStorage.getItem("auth_token");
   if (!token) return;
   const res = await fetch(`${API}/auth/me`, { headers: { Authorization: `Bearer ${token}` } });
+  if (handleDeletedAccountResponse(res)) return;
   if (!res.ok) return;
   const user = (await res.json()).user || {};
   const form = document.getElementById("orderForm");
@@ -443,6 +481,7 @@ async function saveAddressIfMissing(address) {
   const token = localStorage.getItem("auth_token");
   if (!token || !address) return;
   const res = await fetch(`${API}/auth/me`, { headers: { Authorization: `Bearer ${token}` } });
+  if (handleDeletedAccountResponse(res)) return;
   if (!res.ok) return;
   const user = (await res.json()).user || {};
   if (user.address && user.address.trim()) return;
@@ -512,3 +551,5 @@ if (langToggle) {
     applyLang(next);
   });
 }
+
+

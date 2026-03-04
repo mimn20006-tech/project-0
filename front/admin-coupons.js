@@ -34,7 +34,9 @@ function bindCouponsMenu() {
 
 function setupDarkMode() {
   const key = "admin_dark_mode";
-  const isDark = localStorage.getItem(key) === "1";
+  const saved = localStorage.getItem(key);
+  const isDark = saved === null ? true : saved === "1";
+  if (saved === null) localStorage.setItem(key, "1");
   document.body.classList.toggle("admin-dark", isDark);
   const topbar = document.querySelector(".admin-topbar-inner");
   if (!topbar || document.getElementById("adminDarkToggle")) return;
@@ -42,12 +44,12 @@ function setupDarkMode() {
   btn.id = "adminDarkToggle";
   btn.type = "button";
   btn.className = "icon-btn";
-  btn.textContent = isDark ? "â˜€" : "ðŸŒ™";
+  btn.textContent = isDark ? "☀️" : "🌙";
   btn.addEventListener("click", () => {
     const nowDark = !document.body.classList.contains("admin-dark");
     document.body.classList.toggle("admin-dark", nowDark);
     localStorage.setItem(key, nowDark ? "1" : "0");
-    btn.textContent = nowDark ? "â˜€" : "ðŸŒ™";
+    btn.textContent = nowDark ? "☀️" : "🌙";
   });
   topbar.appendChild(btn);
 }
@@ -62,8 +64,10 @@ function getCouponPayload() {
     maxDiscount: Number(document.getElementById("couponMaxDiscount").value || 0),
     usageLimit: Number(document.getElementById("couponUsageLimit").value || 0),
     perUserLimit: Number(document.getElementById("couponPerUserLimit").value || 1),
+    pointsCost: Number(document.getElementById("couponPointsCost").value || 0),
     firstOrderOnly: document.getElementById("couponFirstOrderOnly").checked,
-    enabled: document.getElementById("couponEnabled").checked
+    enabled: document.getElementById("couponEnabled").checked,
+    visibleInStore: document.getElementById("couponVisibleInStore").checked
   };
 }
 
@@ -77,9 +81,11 @@ function fillForm(coupon = null) {
   document.getElementById("couponMaxDiscount").value = coupon?.maxDiscount ?? "";
   document.getElementById("couponUsageLimit").value = coupon?.usageLimit ?? "";
   document.getElementById("couponPerUserLimit").value = coupon?.perUserLimit ?? 1;
+  document.getElementById("couponPointsCost").value = coupon?.pointsCost ?? 0;
   document.getElementById("couponFirstOrderOnly").checked = !!coupon?.firstOrderOnly;
   document.getElementById("couponEnabled").checked = coupon ? !!coupon.enabled : true;
-  document.getElementById("couponSubmitBtn").textContent = coupon ? "ØªØ­Ø¯ÙŠØ« Ø§Ù„ÙƒÙˆØ¨ÙˆÙ†" : "Ø­ÙØ¸ Ø§Ù„ÙƒÙˆØ¨ÙˆÙ†";
+  document.getElementById("couponVisibleInStore").checked = coupon ? !!coupon.visibleInStore : true;
+  document.getElementById("couponSubmitBtn").textContent = coupon ? "تحديث الكوبون" : "حفظ الكوبون";
 }
 
 async function loadCoupons() {
@@ -92,24 +98,26 @@ async function loadCoupons() {
     return;
   }
   if (!res.ok) {
-    wrap.innerHTML = "<p style='color:#e74c3c'>ØªØ¹Ø°Ø± ØªØ­Ù…ÙŠÙ„ Ø§Ù„ÙƒÙˆØ¨ÙˆÙ†Ø§Øª.</p>";
+    wrap.innerHTML = "<p style='color:#e74c3c'>تعذر تحميل الكوبونات.</p>";
     return;
   }
   const data = await res.json();
   if (!data.length) {
-    wrap.innerHTML = "<p style='color:var(--muted)'>Ù„Ø§ ØªÙˆØ¬Ø¯ ÙƒÙˆØ¨ÙˆÙ†Ø§Øª.</p>";
+    wrap.innerHTML = "<p style='color:var(--muted)'>لا توجد كوبونات.</p>";
     return;
   }
   wrap.innerHTML = `
     <table class="admin-table">
       <thead>
         <tr>
-          <th>Ø§Ù„ÙƒÙˆØ¯</th>
-          <th>Ø§Ù„Ù†ÙˆØ¹</th>
-          <th>Ø§Ù„Ù‚ÙŠÙ…Ø©</th>
-          <th>Ø§Ù„Ø§Ø³ØªØ®Ø¯Ø§Ù…</th>
-          <th>Ø§Ù„Ø­Ø§Ù„Ø©</th>
-          <th>Ø¥Ø¬Ø±Ø§Ø¡Ø§Øª</th>
+          <th>الكود</th>
+          <th>النوع</th>
+          <th>القيمة</th>
+          <th>النقاط</th>
+          <th>الاستخدام</th>
+          <th>الحالة</th>
+          <th>المتجر</th>
+          <th>إجراءات</th>
         </tr>
       </thead>
       <tbody>
@@ -118,11 +126,13 @@ async function loadCoupons() {
             <td>${c.code}</td>
             <td>${c.type}</td>
             <td>${c.value}</td>
-            <td>${c.usedCount || 0}/${c.usageLimit || "âˆž"}</td>
-            <td>${c.enabled ? "Ù…ÙØ¹Ù„" : "Ù…ØªÙˆÙ‚Ù"}</td>
+            <td>${Number(c.pointsCost || 0)}</td>
+            <td>${c.usageCount || 0}/${c.usageLimit || "∞"}</td>
+            <td>${c.enabled ? "مفعل" : "متوقف"}</td>
+            <td>${c.visibleInStore ? "يظهر" : "مخفي"}</td>
             <td>
-              <button type="button" class="admin-btn admin-btn-edit" data-edit="${c._id}">ØªØ¹Ø¯ÙŠÙ„</button>
-              <button type="button" class="admin-btn admin-btn-delete" data-del="${c._id}">Ø­Ø°Ù</button>
+              <button type="button" class="admin-btn admin-btn-edit" data-edit="${c._id}">تعديل</button>
+              <button type="button" class="admin-btn admin-btn-delete" data-del="${c._id}">حذف</button>
             </td>
           </tr>
         `).join("")}
@@ -137,9 +147,9 @@ async function loadCoupons() {
   });
   wrap.querySelectorAll("[data-del]").forEach((btn) => {
     btn.addEventListener("click", async () => {
-      if (!confirm("Ø­Ø°Ù Ø§Ù„ÙƒÙˆØ¨ÙˆÙ†ØŸ")) return;
+      if (!confirm("حذف الكوبون؟")) return;
       const del = await fetch(`${couponsApi}/coupons/${btn.dataset.del}`, { method: "DELETE", headers: couponsHeaders() });
-      if (!del.ok) return alert("ØªØ¹Ø°Ø± Ø­Ø°Ù Ø§Ù„ÙƒÙˆØ¨ÙˆÙ†");
+      if (!del.ok) return alert("تعذر حذف الكوبون");
       await loadCoupons();
     });
   });
@@ -155,8 +165,14 @@ document.getElementById("couponForm")?.addEventListener("submit", async (e) => {
     headers: couponsHeaders(true),
     body: JSON.stringify(getCouponPayload())
   });
+  if (res.status === 401) {
+    localStorage.removeItem("admin_token");
+    localStorage.removeItem("admin_user");
+    location.href = "admin-login.html";
+    return;
+  }
   if (!res.ok) {
-    let msg = "ØªØ¹Ø°Ø± Ø­ÙØ¸ Ø§Ù„ÙƒÙˆØ¨ÙˆÙ†";
+    let msg = "تعذر حفظ الكوبون";
     try {
       const d = await res.json();
       if (d?.error) msg = d.error;

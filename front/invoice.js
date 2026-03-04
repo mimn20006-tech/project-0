@@ -1,6 +1,24 @@
 ﻿(function () {
-  const API = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" ? "http://localhost:5000" : "https://ecommerce-api-production-c3a5.up.railway.app") + "/api";
-  let currentLang = (window.getGlobalLang && window.getGlobalLang()) || localStorage.getItem("lang") || "ar";
+  const host = window.location.hostname;
+  const isCapacitorApp = !!(window.Capacitor && (window.Capacitor.isNativePlatform ? window.Capacitor.isNativePlatform() : true));
+  const isLocal = /^(localhost|127[.]0[.]0[.]1)$/i.test(host);
+  const DEPLOY_BACKEND = "https://ecommerce-api-production-c3a5.up.railway.app";
+  const LOCAL_BACKEND = "http://" + host + ":5000";
+  const BACKEND = isCapacitorApp ? DEPLOY_BACKEND : (isLocal ? LOCAL_BACKEND : DEPLOY_BACKEND);
+  const API = BACKEND + "/api";let currentLang = (window.getGlobalLang && window.getGlobalLang()) || localStorage.getItem("lang") || "ar";
+  if (isLocal && !isCapacitorApp && localStorage.getItem("use_local_api") !== "0" && !window.__haFetchFallbackInstalled) {
+    const nativeFetch = window.fetch.bind(window);
+    window.fetch = async (input, init) => {
+      if (typeof input !== "string") return nativeFetch(input, init);
+      try {
+        return await nativeFetch(input, init);
+      } catch (err) {
+        if (!input.startsWith(LOCAL_BACKEND)) throw err;
+        return nativeFetch(input.replace(LOCAL_BACKEND, DEPLOY_BACKEND), init);
+      }
+    };
+    window.__haFetchFallbackInstalled = true;
+  }
   const orderId = new URLSearchParams(location.search).get("orderId");
   const body = document.getElementById("invoiceBody");
 
@@ -81,4 +99,6 @@
     body.innerHTML = `<p>${t("تعذر تحميل الفاتورة.", "Failed to load invoice.")}</p>`;
   });
 })();
+
+
 

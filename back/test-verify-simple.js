@@ -1,5 +1,5 @@
 require("dotenv").config();
-const { sendMail } = require("./utils/mailer");
+const { sendVerificationEmail } = require("./utils/sendgrid");
 
 async function testVerifyFlow() {
   console.log("🧪 Testing Complete Verification Email Flow\n");
@@ -17,11 +17,7 @@ async function testVerifyFlow() {
     console.log("📝 Step 1: Simulating registration - sending verification code...");
     const verifyCode1 = Math.floor(100000 + Math.random() * 900000).toString();
     
-    await sendMail({
-      to: testEmail,
-      subject: "Hand Aura - تأكيد الحساب",
-      text: `رمز تأكيد الحساب: ${verifyCode1}`
-    });
+    await sendVerificationEmail(testEmail, verifyCode1);
     
     console.log(`✅ Verification email sent successfully`);
     console.log(`   Code: ${verifyCode1}\n`);
@@ -35,11 +31,7 @@ async function testVerifyFlow() {
     console.log("🔄 Step 3: Simulating resend - sending new verification code...");
     const verifyCode2 = Math.floor(100000 + Math.random() * 900000).toString();
     
-    await sendMail({
-      to: testEmail,
-      subject: "Hand Aura - تأكيد الحساب",
-      text: `رمز تأكيد الحساب: ${verifyCode2}`
-    });
+    await sendVerificationEmail(testEmail, verifyCode2);
     
     console.log(`✅ Resend email sent successfully`);
     console.log(`   New Code: ${verifyCode2}\n`);

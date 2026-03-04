@@ -18,7 +18,18 @@ const UserSchema = new mongoose.Schema({
   adminTwoFactorCode: String,
   adminTwoFactorExpires: Date,
   loyaltyPoints: { type: Number, default: 0 },
-  loyaltySpent: { type: Number, default: 0 }
+  loyaltySpent: { type: Number, default: 0 },
+  marketingLastSentAt: Date,
+  ownedCoupons: {
+    type: [{
+      couponId: { type: mongoose.Schema.Types.ObjectId, ref: "Coupon" },
+      code: String,
+      title: String,
+      pointsCost: Number,
+      redeemedAt: { type: Date, default: Date.now }
+    }],
+    default: []
+  }
 });
 
 module.exports = mongoose.model("User", UserSchema);

@@ -5,12 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>تسجيل الدخول | Hand Aura</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="site-logo.png">
+  <link rel="apple-touch-icon" href="site-logo.png">
 </head>
-<body class="center-page">
+<body class="center-page clone-ui">
   <header class="header">
     <div class="header-top">
       <button class="icon-btn menu-btn" aria-label="القائمة">☰</button>
       <a href="index.html" class="logo">Hand Aura</a>
+      <nav class="clone-nav" aria-label="روابط رئيسية">
+        <a href="index.html" class="active">الرئيسية</a>
+        <a href="profile.html">الحساب</a>
+      </nav>
       <div class="header-actions">
         <a href="track.html" class="track-link">تتبع الطلب</a>
         <a href="cart.html" class="icon-btn cart-btn" title="السلة">🛒 <span id="cartCount">0</span></a>
@@ -43,8 +49,8 @@
     </section>
   </main>
 
-  <script src="auth.js"></script>
-  <script src="auth-ui.js?v=20260221d"></script>
+  <script src="auth-20260222.js"></script>
+  <script src="auth-ui-20260222.js"></script>
 
   <div class="menu-overlay" id="menuOverlay"></div>
   <aside class="side-menu" id="sideMenu">
@@ -59,8 +65,16 @@
     <button type="button" class="side-logout" id="logoutBtn" data-auth="user" data-i18n-global="logout">تسجيل الخروج</button>
   </aside>
   
+  <script src="seo.js?v=20260228"></script>
 </body>
 </html>
+
+
+
+
+
+
+
 
 
 

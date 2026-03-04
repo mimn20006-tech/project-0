@@ -1,7 +1,10 @@
 const jwt = require("jsonwebtoken");
 const { hasPermission } = require("../utils/permissions");
 
-const JWT_SECRET = process.env.JWT_SECRET || "hoodie-dev-secret";
+const JWT_SECRET = String(process.env.JWT_SECRET || "").trim();
+if (!JWT_SECRET) {
+  throw new Error("Missing JWT_SECRET. Set a strong JWT_SECRET in environment variables.");
+}
 
 function extractToken(req) {
   const header = req.headers.authorization || "";

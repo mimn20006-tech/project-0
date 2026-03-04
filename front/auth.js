@@ -1,9 +1,33 @@
 ﻿const authHost = window.location.hostname;
-const AUTH_BACKEND = /^(localhost|127[.]0[.]0[.]1)$/i.test(authHost)
-  ? "http://" + authHost + ":5000"
-  : "https://ecommerce-api-production-c3a5.up.railway.app";
-const API = AUTH_BACKEND + "/api";
-const REQUEST_TIMEOUT_MS = 12000;
+const authIsCapacitorApp = !!(window.Capacitor && (window.Capacitor.isNativePlatform ? window.Capacitor.isNativePlatform() : true));
+const AUTH_DEPLOY_BACKEND = "https://ecommerce-api-production-c3a5.up.railway.app";
+const authLocalBackend = "http://" + authHost + ":5000";
+const authIsLocalHost = /^(localhost|127[.]0[.]0[.]1)$/i.test(authHost);
+const AUTH_BACKEND = authIsCapacitorApp
+  ? AUTH_DEPLOY_BACKEND
+  : (authIsLocalHost
+    ? (localStorage.getItem("use_local_api") === "0" ? AUTH_DEPLOY_BACKEND : authLocalBackend)
+    : AUTH_DEPLOY_BACKEND);
+const API = AUTH_BACKEND + "/api";const REQUEST_TIMEOUT_MS = 12000;
+
+function installAutoBackendFallback(localBase, deployBase) {
+  if (!localBase || !deployBase || localBase === deployBase || window.__haFetchFallbackInstalled) return;
+  const nativeFetch = window.fetch.bind(window);
+  window.fetch = async (input, init) => {
+    if (typeof input !== "string") return nativeFetch(input, init);
+    try {
+      return await nativeFetch(input, init);
+    } catch (err) {
+      if (!input.startsWith(localBase)) throw err;
+      return nativeFetch(input.replace(localBase, deployBase), init);
+    }
+  };
+  window.__haFetchFallbackInstalled = true;
+}
+
+if (authIsLocalHost && localStorage.getItem("use_local_api") !== "0") {
+  installAutoBackendFallback(authLocalBackend, AUTH_DEPLOY_BACKEND);
+}
 
 function withTimeoutFetch(url, options = {}, timeoutMs = REQUEST_TIMEOUT_MS) {
   const controller = new AbortController();
@@ -196,8 +220,15 @@ if (registerForm) {
         const data = await res.json();
         setAuth(data.token, data.user);
         localStorage.setItem("pending_verify_email", email);
-        localStorage.setItem("verify_notice", "تم إرسال رمز التفعيل إلى بريدك الإلكتروني");
-        location.href = "verify.html";
+        if (data && data.mailSent === false) {
+          localStorage.setItem("verify_notice", "تم إنشاء الحساب بنجاح. تم تفعيل الحساب تلقائياً لأن خدمة البريد غير متاحة حالياً.");
+        } else {
+          localStorage.setItem("verify_notice", "تم إنشاء الحساب بنجاح. تم إرسال رمز التفعيل إلى بريدك الإلكتروني.");
+        }
+        setFormSuccess("registerError", "تم إنشاء الحساب بنجاح، سيتم تحويلك لصفحة التأكيد...");
+        setTimeout(() => {
+          location.href = "verify.html";
+        }, 1200);
         return;
       }
 
@@ -281,18 +312,6 @@ if (resendBtn) {
     const startTime = Date.now();
     console.log("FRONTEND_RESEND_START", { email, api: `${API}/auth/resend` });
     
-    // First, test if server is reachable
-    try {
-      const healthCheck = await fetch(`${AUTH_BACKEND}/`, { method: "GET", signal: AbortSignal.timeout(5000) });
-      console.log("HEALTH_CHECK", { status: healthCheck.status, ok: healthCheck.ok });
-    } catch (healthErr) {
-      console.error("HEALTH_CHECK_FAILED", { error: healthErr.message });
-      setFormError("verifyError", "لا يمكن الوصول إلى السيرفر. تأكد من أن السيرفر يعمل.");
-      resendBtn.disabled = false;
-      resendBtn.textContent = oldText;
-      return;
-    }
-    
     try {
       const res = await withTimeoutFetch(`${API}/auth/resend`, {
         method: "POST",
@@ -304,8 +323,16 @@ if (resendBtn) {
       console.log("FRONTEND_RESEND_RESPONSE", { status: res.status, ok: res.ok, elapsed });
       
       if (res.ok) {
-        setFieldSuccess(emailInput, "تم إرسال كود التفعيل");
-        setFormSuccess("verifyError", `تم إرسال رمز جديد إلى بريدك الإلكتروني (استغرق ${elapsed} ثانية)`);
+        let payload = {};
+        try {
+          payload = await res.json();
+        } catch {}
+        setFieldSuccess(emailInput, "تم تنفيذ الطلب");
+        if (payload && payload.mailSent === false) {
+          setFormSuccess("verifyError", `تم تفعيل الحساب تلقائياً لأن خدمة البريد غير متاحة حالياً (استغرق ${elapsed} ثانية)`);
+        } else {
+          setFormSuccess("verifyError", `تم إرسال رمز جديد إلى بريدك الإلكتروني (استغرق ${elapsed} ثانية)`);
+        }
       } else {
         const msg = await readError(res, "تعذر إرسال الكود");
         console.error("FRONTEND_RESEND_ERROR", { status: res.status, msg });
@@ -408,3 +435,5 @@ if (resetForm) {
 }
 
 checkOAuthStatus();
+
+

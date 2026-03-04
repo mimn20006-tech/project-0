@@ -9,6 +9,8 @@ const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
 const hpp = require("hpp");
 const multer = require("multer");
+const { getUploadDir, migrateLegacyUploads } = require("./utils/uploads");
+const { startMarketingJobs } = require("./services/marketing-jobs");
 
 const app = express();
 const { passport } = require("./oauth");
@@ -93,7 +95,8 @@ app.use((req, res, next) => {
 });
 
 // ملفات الصور المرفوعة
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+migrateLegacyUploads();
+app.use("/uploads", express.static(getUploadDir()));
 
 const MONGODB_URI = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/hoodie";
 const PORT = process.env.PORT || 5000;
@@ -193,5 +196,7 @@ async function runSnapshotBackup() {
 setInterval(() => {
   runSnapshotBackup();
 }, 12 * 60 * 60 * 1000);
+
+startMarketingJobs();
 
 app.listen(PORT, () => console.log("Server running"));

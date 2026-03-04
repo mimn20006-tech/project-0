@@ -31,7 +31,9 @@ function bindTranslationsMenu() {
 
 function setupDarkMode() {
   const key = "admin_dark_mode";
-  const isDark = localStorage.getItem(key) === "1";
+  const saved = localStorage.getItem(key);
+  const isDark = saved === null ? true : saved === "1";
+  if (saved === null) localStorage.setItem(key, "1");
   document.body.classList.toggle("admin-dark", isDark);
   const topbar = document.querySelector(".admin-topbar-inner");
   if (!topbar || document.getElementById("adminDarkToggle")) return;
@@ -39,12 +41,12 @@ function setupDarkMode() {
   btn.id = "adminDarkToggle";
   btn.type = "button";
   btn.className = "icon-btn";
-  btn.textContent = isDark ? "â˜€" : "ðŸŒ™";
+  btn.textContent = isDark ? "☀️" : "🌙";
   btn.addEventListener("click", () => {
     const nowDark = !document.body.classList.contains("admin-dark");
     document.body.classList.toggle("admin-dark", nowDark);
     localStorage.setItem(key, nowDark ? "1" : "0");
-    btn.textContent = nowDark ? "â˜€" : "ðŸŒ™";
+    btn.textContent = nowDark ? "☀️" : "🌙";
   });
   topbar.appendChild(btn);
 }
@@ -64,8 +66,8 @@ document.getElementById("i18nForm")?.addEventListener("submit", async (e) => {
   let dict;
   try {
     dict = JSON.parse(document.getElementById("dictInput").value || "{}");
-  } catch {
-    alert("ØµÙŠØºØ© JSON ØºÙŠØ± ØµØ­ÙŠØ­Ø©");
+  } catch (e) {
+    alert("صورة JSON غير صحيحة");
     return;
   }
   const languages = (document.getElementById("languagesInput").value || "")
@@ -83,7 +85,7 @@ document.getElementById("i18nForm")?.addEventListener("submit", async (e) => {
     body: JSON.stringify(payload)
   });
   if (!res.ok) {
-    let msg = "ØªØ¹Ø°Ø± Ø­ÙØ¸ Ø§Ù„ØªØ±Ø¬Ù…Ø©";
+    let msg = "حدث خطأ أثناء حفظ الترجمة";
     try {
       const d = await res.json();
       if (d?.error) msg = d.error;
@@ -91,7 +93,7 @@ document.getElementById("i18nForm")?.addEventListener("submit", async (e) => {
     alert(msg);
     return;
   }
-  alert("ØªÙ… Ø­ÙØ¸ Ø§Ù„ØªØ±Ø¬Ù…Ø© Ø§Ù„Ø¯ÙŠÙ†Ø§Ù…ÙŠÙƒÙŠØ©");
+  alert("تم حفظ الترجمة الديناميكية بنجاح");
 });
 
 if (!localStorage.getItem("admin_token")) location.href = "admin-login.html";

@@ -60,10 +60,36 @@ function logLoginFailure(email, reason, ip, ua) {
 
 function makeToken(user) {
   return jwt.sign(
-    { id: user._id, email: user.email, name: user.name, role: user.role, phone: user.phone, country: user.country, address: user.address, avatar: user.avatar },
+    {
+      id: user._id,
+      email: user.email,
+      name: user.name,
+      role: user.role,
+      phone: user.phone,
+      country: user.country,
+      address: user.address,
+      avatar: user.avatar,
+      loyaltyPoints: Number(user.loyaltyPoints || 0),
+      loyaltySpent: Number(user.loyaltySpent || 0)
+    },
     JWT_SECRET,
     { expiresIn: "7d" }
   );
+}
+
+function mapUser(user) {
+  return {
+    id: user._id,
+    name: user.name,
+    email: user.email,
+    role: user.role,
+    phone: user.phone,
+    country: user.country,
+    address: user.address,
+    avatar: user.avatar,
+    loyaltyPoints: Number(user.loyaltyPoints || 0),
+    loyaltySpent: Number(user.loyaltySpent || 0)
+  };
 }
 
 router.post("/register", async (req, res) => {
@@ -77,18 +103,23 @@ router.post("/register", async (req, res) => {
     const passwordHash = await bcrypt.hash(password, 10);
     const verifyCode = Math.floor(100000 + Math.random() * 900000).toString();
     const user = await User.create({ name, email, passwordHash, verifyCode, emailVerified: false });
+
     await sendMail({
       to: email,
       subject: "Hand Aura - تأكيد الحساب",
       text: `رمز تأكيد الحساب: ${verifyCode}`
     });
+
     const token = makeToken(user);
-    res.json({ token, user: { id: user._id, name: user.name, email: user.email, role: user.role, phone: user.phone, country: user.country, address: user.address, avatar: user.avatar } });
+    res.json({
+      token,
+      mailSent: true,
+      user: mapUser(user)
+    });
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    res.status(500).json({ error: err.message || "Failed to send verification email" });
   }
 });
-
 // create admin once
 router.post("/admin/register", async (req, res) => {
   try {
@@ -105,7 +136,7 @@ router.post("/admin/register", async (req, res) => {
     const passwordHash = await bcrypt.hash(password, 10);
     const user = await User.create({ name, email, passwordHash, role: "admin", emailVerified: true });
     const token = makeToken(user);
-    res.json({ token, user: { id: user._id, name: user.name, email: user.email, role: user.role } });
+    res.json({ token, user: mapUser(user) });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
@@ -130,7 +161,7 @@ router.post("/admin/login", async (req, res) => {
     }
     const token = makeToken(user);
     logLoginSuccess("admin", email, req.ip, req.headers["user-agent"]);
-    res.json({ token, user: { id: user._id, name: user.name, email: user.email, role: user.role } });
+    res.json({ token, user: mapUser(user) });
   } catch (err) {
     logAdminAuthFailure(req.body?.email, "error", req.ip, req.headers["user-agent"]);
     res.status(400).json({ error: err.message });
@@ -186,7 +217,7 @@ router.post("/login", async (req, res) => {
     }
     const token = makeToken(user);
     logLoginSuccess("user", email, req.ip, req.headers["user-agent"]);
-    res.json({ token, user: { id: user._id, name: user.name, email: user.email, role: user.role, phone: user.phone, country: user.country, address: user.address, avatar: user.avatar } });
+    res.json({ token, user: mapUser(user) });
   } catch (err) {
     logLoginFailure(req.body?.email, "error", req.ip, req.headers["user-agent"]);
     res.status(400).json({ error: err.message });
@@ -217,7 +248,7 @@ router.post("/verify", async (req, res) => {
     await user.save();
     res.json({ ok: true });
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    res.status(500).json({ error: err.message || "Failed to resend verification email" });
   }
 });
 
@@ -231,14 +262,16 @@ router.post("/resend", async (req, res) => {
     const verifyCode = Math.floor(100000 + Math.random() * 900000).toString();
     user.verifyCode = verifyCode;
     await user.save();
+
     await sendMail({
       to: email,
       subject: "Hand Aura - تأكيد الحساب",
       text: `رمز تأكيد الحساب: ${verifyCode}`
     });
-    res.json({ ok: true });
+
+    res.json({ ok: true, mailSent: true });
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    res.status(500).json({ error: err.message || "Failed to send reset email" });
   }
 });
 
@@ -252,12 +285,14 @@ router.post("/forgot", async (req, res) => {
     user.resetCode = resetCode;
     user.resetCodeExpires = new Date(Date.now() + 15 * 60 * 1000);
     await user.save();
+
     await sendMail({
       to: email,
       subject: "Hand Aura - إعادة تعيين كلمة المرور",
       text: `رمز إعادة التعيين: ${resetCode}`
     });
-    res.json({ ok: true });
+
+    res.json({ ok: true, mailSent: true });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
@@ -287,7 +322,7 @@ router.post("/reset", async (req, res) => {
 router.get("/me", requireAuth, async (req, res) => {
   const user = await User.findById(req.user.id);
   if (!user) return res.status(404).json({ error: "User not found" });
-  res.json({ user: { id: user._id, name: user.name, email: user.email, role: user.role, phone: user.phone, country: user.country, address: user.address, avatar: user.avatar } });
+  res.json({ user: mapUser(user) });
 });
 
 router.put("/profile", requireAuth, upload.single("avatar"), async (req, res) => {
@@ -304,7 +339,7 @@ router.put("/profile", requireAuth, upload.single("avatar"), async (req, res) =>
     }
     await user.save();
     const token = makeToken(user);
-    res.json({ token, user: { id: user._id, name: user.name, email: user.email, role: user.role, phone: user.phone, country: user.country, address: user.address, avatar: user.avatar } });
+    res.json({ token, user: mapUser(user) });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }

@@ -16,9 +16,10 @@ const CouponSchema = new mongoose.Schema({
   userUsage: { type: Map, of: Number, default: {} },
   firstOrderOnly: { type: Boolean, default: false },
   enabled: { type: Boolean, default: true },
+  visibleInStore: { type: Boolean, default: false },
+  pointsCost: { type: Number, default: 0 },
   tags: [String],
   createdAt: { type: Date, default: Date.now }
 });
 
 module.exports = mongoose.model("Coupon", CouponSchema);
-

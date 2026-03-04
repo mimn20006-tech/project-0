@@ -7,13 +7,15 @@
   <meta property="og:type" content="website">
   <meta property="og:title" content="Hand Aura">
   <meta property="og:description" content="متجر Hand Aura للملابس.">
-  <meta property="og:image" content="">
+  <meta property="og:image" content="https://ecommerce-front-production-f6d6.up.railway.app/site-logo.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Hand Aura">
   <meta name="twitter:description" content="متجر Hand Aura للملابس.">
-  <meta name="twitter:image" content="">
+  <meta name="twitter:image" content="https://ecommerce-front-production-f6d6.up.railway.app/site-logo.png">
   <link rel="canonical" href="https://hand-aura-production.up.railway.app/index.html">
   <title>Hand Aura</title>
+  <link rel="icon" type="image/png" href="site-logo.png">
+  <link rel="apple-touch-icon" href="site-logo.png">
   <link rel="stylesheet" href="style.css">
   <script type="application/ld+json">
   {
@@ -30,11 +32,15 @@
   }
   </script>
 </head>
-<body>
+<body class="clone-ui">
   <header class="header">
     <div class="header-top">
       <button class="icon-btn menu-btn" aria-label="القائمة">&#9776;</button>
       <a href="index.html" class="logo">Hand Aura</a>
+      <nav class="clone-nav" aria-label="روابط رئيسية">
+        <a href="index.html" class="active">الرئيسية</a>
+        <a href="profile.html">الحساب</a>
+      </nav>
       <div class="header-actions">
         <a href="track.html" class="track-link">تتبع الطلب</a>
         <a href="login.html" class="track-link auth-link" data-auth="guest">تسجيل الدخول</a>
@@ -74,11 +80,13 @@
   <main class="main">
     <section class="hero">
       <div class="hero-text">
+        <span class="hero-chip">مجموعة الفخامة 2026</span>
         <p class="hero-tagline" id="heroTagline">أفضل القطع هنا فقط</p>
         <h1 class="hero-title" id="heroTitle">Hand Aura</h1>
+        <p class="hero-copy">تسوق الآن من أفضل الماركات العالمية بأسعار لا تقبل المنافسة. جودة عالية وتوصيل سريع لباب بيتك بلمسة من الفخامة.</p>
         <div class="hero-card" id="heroCta">
           <div class="hero-card-main">
-            <span>اسحب</span>
+            <span>تسوق الآن</span>
             <span class="arrow">&rarr;</span>
           </div>
           <span class="hero-card-sub">اكتشف الآن</span>
@@ -86,6 +94,10 @@
       </div>
       <div class="hero-image-wrap">
         <img class="hero-image" id="heroImage" src="" alt="Hand Aura">
+        <div class="hero-rating">
+          <div class="hero-rating-label">تقييم العملاء</div>
+          <div class="hero-rating-value">4.9/5.0 ★</div>
+        </div>
       </div>
     </section>
 
@@ -122,13 +134,7 @@
             <div class="modal-block" id="modalRecommendations"></div>
             <div class="modal-block" id="modalRating"></div>
             <div class="modal-comments">
-              <div class="modal-label">التعليقات</div>
               <div id="modalComments" class="modal-comments-list"></div>
-              <div class="comment-form" id="modalCommentForm">
-                <textarea id="modalCommentInput" rows="2" placeholder="اكتب تعليقًا..."></textarea>
-                <button type="button" id="modalCommentBtn">إرسال</button>
-                <div class="comment-msg" id="modalCommentMsg"></div>
-              </div>
             </div>
             <div class="product-modal-actions">
               <button class="add-btn modal-add-btn" id="modalAddBtn" type="button"></button>
@@ -191,12 +197,22 @@
     <button type="button" class="side-logout" id="logoutBtn" data-auth="user" data-i18n-global="logout">تسجيل الخروج</button>
   </aside>
 
-  <script src="main.js"></script>
-  <script src="auth-ui.js?v=20260221d"></script>
-  <script src="analytics.js"></script>
+  <script src="main.js?v=20260222"></script>
+  <script src="auth-ui.js?v=20260222"></script>
+  <script src="analytics.js?v=20260222"></script>
   
+  <script src="seo.js?v=20260228"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
 
 
 

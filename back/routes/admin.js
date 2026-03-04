@@ -10,7 +10,7 @@ const { writeAudit } = require("../utils/audit");
 
 router.get("/users", requirePermission("dashboard.read"), async (req, res) => {
   const users = await User.find()
-    .select("_id name email role createdAt")
+    .select("_id name email role loyaltyPoints loyaltySpent createdAt")
     .sort({ createdAt: -1 })
     .lean();
   res.json(users);
@@ -32,6 +32,23 @@ router.put("/users/:id/role", requirePermission("settings.manage"), async (req, 
     metadata: { role }
   });
   res.json(user);
+});
+
+router.delete("/users/:id", requirePermission("settings.manage"), async (req, res) => {
+  if (String(req.user?.id || "") === String(req.params.id || "")) {
+    return res.status(400).json({ error: "Cannot delete current admin" });
+  }
+  const user = await User.findById(req.params.id).select("_id name email role");
+  if (!user) return res.status(404).json({ error: "User not found" });
+  await User.deleteOne({ _id: user._id });
+  await writeAudit({
+    req,
+    action: "admin.user_delete",
+    targetType: "user",
+    targetId: user._id,
+    metadata: { email: user.email, role: user.role }
+  });
+  res.json({ ok: true, id: String(user._id) });
 });
 
 router.get("/alerts/stock", requirePermission("report.read"), async (req, res) => {

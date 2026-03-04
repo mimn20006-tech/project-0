@@ -1,0 +1,8 @@
+{
+  "appId": "com.handaura.store",
+  "appName": "Hand Aura",
+  "webDir": "../front",
+  "server": {
+    "cleartext": false
+  }
+}

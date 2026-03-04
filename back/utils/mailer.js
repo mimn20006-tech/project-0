@@ -1,56 +1,47 @@
-const nodemailer = require("nodemailer");
+"use strict";
 
-const smtpPass = String(process.env.SMTP_PASS || "").trim();
-const provider = String(process.env.MAIL_PROVIDER || "custom").trim().toLowerCase();
+const sgMail = require("@sendgrid/mail");
 
-const providerDefaults = {
-  brevo: { host: "smtp-relay.brevo.com", port: 587 },
-  sendgrid: { host: "smtp.sendgrid.net", port: 587 },
-  mailgun: { host: "smtp.mailgun.org", port: 587 },
-  resend: { host: "smtp.resend.com", port: 587 }
-};
+const SENDGRID_API_KEY = (process.env.SENDGRID_API_KEY || "").trim();
+const MAIL_FROM = (process.env.MAIL_FROM || "").trim();
 
-const smtpHost = process.env.SMTP_HOST || providerDefaults[provider]?.host || "";
-const smtpPort = Number(process.env.SMTP_PORT || providerDefaults[provider]?.port || 587);
-const smtpSecure = smtpPort === 465;
-
-const transporter = nodemailer.createTransport({
-  host: smtpHost,
-  port: smtpPort,
-  secure: smtpSecure,
-  connectionTimeout: Number(process.env.SMTP_CONNECTION_TIMEOUT || 30000),
-  greetingTimeout: Number(process.env.SMTP_GREETING_TIMEOUT || 30000),
-  socketTimeout: Number(process.env.SMTP_SOCKET_TIMEOUT || 60000),
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: smtpPass
-  }
-});
+function isSendGridConfigured() {
+  return Boolean(SENDGRID_API_KEY && MAIL_FROM);
+}
 
 async function sendMail({ to, subject, text }) {
-  const missing = [];
-  if (!smtpHost) missing.push("SMTP_HOST");
-  if (!process.env.SMTP_USER) missing.push("SMTP_USER");
-  if (!smtpPass) missing.push("SMTP_PASS");
-  if (missing.length) {
-    throw new Error(`SMTP not configured: missing ${missing.join(", ")}`);
+  if (!to || !subject) {
+    throw new Error("sendMail requires to and subject");
   }
+
+  if (!SENDGRID_API_KEY) {
+    throw new Error("Email not configured: set SENDGRID_API_KEY in environment");
+  }
+  if (!MAIL_FROM) {
+    throw new Error("Email not configured: set MAIL_FROM (verified sender) in environment");
+  }
+
+  sgMail.setApiKey(SENDGRID_API_KEY);
+
   try {
-    return await transporter.sendMail({
-      from: process.env.MAIL_FROM || process.env.SMTP_USER,
+    await sgMail.send({
       to,
+      from: MAIL_FROM,
       subject,
-      text
+      text: text || "",
+      html: text ? text.replace(/\n/g, "<br>") : ""
     });
+    console.log("MAIL_SENT", { provider: "sendgrid", to });
   } catch (err) {
-    console.error("MAIL_ERROR", {
-      message: err.message,
+    const sgMessage = err?.response?.body?.errors?.[0]?.message || err.message || "Unknown SendGrid error";
+    console.error("SENDGRID_ERROR", {
+      message: sgMessage,
       code: err.code,
-      response: err.response,
-      responseCode: err.responseCode
+      response: err.response?.body,
+      statusCode: err.response?.statusCode
     });
-    throw err;
+    throw new Error(`SendGrid rejected email request: ${sgMessage}`);
   }
 }
 
-module.exports = { sendMail };
+module.exports = { sendMail, isSendGridConfigured };

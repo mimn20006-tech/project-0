@@ -5,12 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>الحساب | Hand Aura</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="site-logo.png">
+  <link rel="apple-touch-icon" href="site-logo.png">
 </head>
-<body class="center-page">
+<body class="center-page clone-ui page-profile">
   <header class="header">
     <div class="header-top">
       <button class="icon-btn menu-btn" aria-label="القائمة">☰</button>
       <a href="index.html" class="logo">Hand Aura</a>
+      <nav class="clone-nav" aria-label="روابط رئيسية">
+        <a href="index.html" class="active">الرئيسية</a>
+        <a href="profile.html">الحساب</a>
+      </nav>
       <div class="header-actions">
         <a href="track.html" class="track-link">تتبع الطلب</a>
         <button class="icon-btn lang-btn" id="langToggle" type="button">AR</button>
@@ -20,9 +26,10 @@
   </header>
 
   <main class="main center-main">
-    <section class="auth-wrap">
+    <section class="auth-wrap profile-auth-wrap">
       <div class="auth-card">
         <h2>بيانات الحساب</h2>
+        <p id="loyaltyPointsInfo" class="auth-hint">النقاط الحالية: 0</p>
         <form id="profileForm">
           <input type="text" name="name" placeholder="الاسم" required>
           <input type="text" name="phone" placeholder="رقم الهاتف">
@@ -33,11 +40,20 @@
           <p class="auth-error" id="profileMsg"></p>
         </form>
       </div>
+      <div class="auth-card coupon-store-card" style="margin-top:14px">
+        <h2>متجر البونات</h2>
+        <p class="auth-hint">اشترِ البون بالنقاط ثم استخدم الكود عند الدفع.</p>
+        <div id="couponStoreWrap"></div>
+      </div>
+      <div class="auth-card coupon-owned-card" style="margin-top:14px">
+        <h2>البونات المملوكة</h2>
+        <div id="myCouponsWrap"></div>
+      </div>
     </section>
   </main>
 
-  <script src="profile.js"></script>
-  <script src="auth-ui.js?v=20260221d"></script>
+  <script src="profile.js?v=20260222"></script>
+  <script src="auth-ui.js?v=20260222"></script>
 
   <div class="menu-overlay" id="menuOverlay"></div>
   <aside class="side-menu" id="sideMenu">
@@ -52,8 +68,17 @@
     <button type="button" class="side-logout" id="logoutBtn" data-auth="user" data-i18n-global="logout">تسجيل الخروج</button>
   </aside>
   
+  <script src="seo.js?v=20260228"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+
 
 
 

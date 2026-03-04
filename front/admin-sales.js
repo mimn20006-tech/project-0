@@ -11,7 +11,7 @@ function salesHeaders(json = false) {
 }
 
 function money(value) {
-  return `${Number(value || 0).toFixed(0)} Ø¬Ù†ÙŠÙ‡`;
+  return `${Number(value || 0).toFixed(0)} جنية`;
 }
 
 function bindSalesMenu() {
@@ -35,7 +35,9 @@ function bindSalesMenu() {
 
 function setupDarkMode() {
   const key = "admin_dark_mode";
-  const isDark = localStorage.getItem(key) === "1";
+  const saved = localStorage.getItem(key);
+  const isDark = saved === null ? true : saved === "1";
+  if (saved === null) localStorage.setItem(key, "1");
   document.body.classList.toggle("admin-dark", isDark);
   const topbar = document.querySelector(".admin-topbar-inner");
   if (!topbar || document.getElementById("adminDarkToggle")) return;
@@ -43,12 +45,12 @@ function setupDarkMode() {
   btn.id = "adminDarkToggle";
   btn.type = "button";
   btn.className = "icon-btn";
-  btn.textContent = isDark ? "â˜€" : "ðŸŒ™";
+  btn.textContent = isDark ? "☀️" : "🌙";
   btn.addEventListener("click", () => {
     const nowDark = !document.body.classList.contains("admin-dark");
     document.body.classList.toggle("admin-dark", nowDark);
     localStorage.setItem(key, nowDark ? "1" : "0");
-    btn.textContent = nowDark ? "â˜€" : "ðŸŒ™";
+    btn.textContent = nowDark ? "☀️" : "🌙";
   });
   topbar.appendChild(btn);
 }
@@ -68,14 +70,14 @@ async function loadLowStock() {
   if (!box) return;
   const res = await fetch(`${salesApi}/reports/inventory`, { headers: salesHeaders() });
   if (!res.ok) {
-    box.innerHTML = "<p style='color:var(--muted)'>ØªØ¹Ø°Ø± ØªØ­Ù…ÙŠÙ„ ØªÙ†Ø¨ÙŠÙ‡Ø§Øª Ø§Ù„Ù…Ø®Ø²ÙˆÙ†.</p>";
+    box.innerHTML = "<p style='color:var(--muted)'>حدث خطأ أثناء تحميل تنبيهات المخزون.</p>";
     return;
   }
   const data = await res.json();
   const list = data.lowStock || [];
   box.innerHTML = `
-    <p style="margin:.4rem 0">Ø¹Ø¯Ø¯ Ø§Ù„Ù…Ù†ØªØ¬Ø§Øª Ù…Ù†Ø®ÙØ¶Ø© Ø§Ù„Ù…Ø®Ø²ÙˆÙ†: <strong>${data.lowStockCount || 0}</strong></p>
-    ${list.length ? `<ul style="margin:0;padding:0 1rem">${list.map((p) => `<li>${p.name} - ${p.stock} Ù‚Ø·Ø¹Ø©</li>`).join("")}</ul>` : "<p style='color:var(--muted)'>Ù„Ø§ ÙŠÙˆØ¬Ø¯ Ù…Ù†ØªØ¬Ø§Øª Ù…Ù†Ø®ÙØ¶Ø© Ø­Ø§Ù„ÙŠÙ‹Ø§.</p>"}
+    <p style="margin:.4rem 0">عدد التنبيهات المخزونية: <strong>${data.lowStockCount || 0}</strong></p>
+    ${list.length ? `<ul style="margin:0;padding:0 1rem">${list.map((p) => `<li>${p.name} - ${p.stock} قطعة</li>`).join("")}</ul>` : "<p style='color:var(--muted)'>لا توجد تنبيهات مخزونية.</p>"}
   `;
 }
 
@@ -84,12 +86,12 @@ async function loadAbandoned() {
   if (!box) return;
   const res = await fetch(`${salesApi}/marketing/abandoned-carts`, { headers: salesHeaders() });
   if (!res.ok) {
-    box.innerHTML = "<p style='color:var(--muted)'>ØªØ¹Ø°Ø± ØªØ­Ù…ÙŠÙ„ Ø§Ù„Ø³Ù„Ø§Ù„ Ø§Ù„Ù…ØªØ±ÙˆÙƒØ©.</p>";
+    box.innerHTML = "<p style='color:var(--muted)'>حدث خطأ أثناء تحميل السلاسل المتروكة.</p>";
     return;
   }
   const carts = await res.json();
   box.innerHTML = carts.length
-    ? `<table class="admin-table"><thead><tr><th>Ø§Ù„Ø¹Ù…ÙŠÙ„</th><th>Ø§Ù„Ø¥ÙŠÙ…ÙŠÙ„</th><th>Ø§Ù„Ù‚ÙŠÙ…Ø©</th><th>Ø¢Ø®Ø± Ù†Ø´Ø§Ø·</th></tr></thead><tbody>${carts.map((c) => `
+    ? `<table class="admin-table"><thead><tr><th>الاسم</th><th>البريد الإلكتروني</th><th>القيمة</th><th>آخر نشاط</th></tr></thead><tbody>${carts.map((c) => `
       <tr>
         <td>${c.name || "-"}</td>
         <td>${c.email || "-"}</td>
@@ -97,7 +99,7 @@ async function loadAbandoned() {
         <td>${new Date(c.lastActiveAt).toLocaleString("ar-EG")}</td>
       </tr>
     `).join("")}</tbody></table>`
-    : "<p style='color:var(--muted)'>Ù„Ø§ ØªÙˆØ¬Ø¯ Ø³Ù„Ø§Ù„ Ù…ØªØ±ÙˆÙƒØ© Ù†Ø´Ø·Ø©.</p>";
+    : "<p style='color:var(--muted)'>لا توجد سلاسل متروكة.</p>";
 }
 
 async function loadCartIntent() {
@@ -105,14 +107,14 @@ async function loadCartIntent() {
   if (!wrap) return;
   const res = await fetch(`${salesApi}/analytics/dashboard`, { headers: salesHeaders() });
   if (!res.ok) {
-    wrap.innerHTML = "<p style='color:var(--muted)'>ØªØ¹Ø°Ø± ØªØ­Ù…ÙŠÙ„ Ø§Ù„ØªØ­Ù„ÙŠÙ„ Ø§Ù„Ø³Ù„ÙˆÙƒÙŠ.</p>";
+    wrap.innerHTML = "<p style='color:var(--muted)'>حدث خطأ أثناء تحميل التحليلات.</p>";
     return;
   }
   const data = await res.json();
   const rows = data.cartNotPurchased || [];
   wrap.innerHTML = rows.length
-    ? `<table class="admin-table"><thead><tr><th>Product ID</th><th>Ù…Ø±Ø§Øª Ø§Ù„Ø¥Ø¶Ø§ÙØ© Ù„Ù„Ø³Ù„Ø©</th></tr></thead><tbody>${rows.map((r) => `<tr><td>${r.productId}</td><td>${r.adds}</td></tr>`).join("")}</tbody></table>`
-    : "<p style='color:var(--muted)'>Ù„Ø§ ØªÙˆØ¬Ø¯ ÙØ¬ÙˆØ§Øª Ø´Ø±Ø§Ø¡ Ø¸Ø§Ù‡Ø±Ø© Ø­Ø§Ù„ÙŠÙ‹Ø§.</p>";
+    ? `<table class="admin-table"><thead><tr><th>Product ID</th><th>عدد الإضافات للسلة</th></tr></thead><tbody>${rows.map((r) => `<tr><td>${r.productId}</td><td>${r.adds}</td></tr>`).join("")}</tbody></table>`
+    : "<p style='color:var(--muted)'>لا توجد فجوات شراء مسجلة.</p>";
 }
 
 document.getElementById("sendRemindersBtn")?.addEventListener("click", async () => {
@@ -122,9 +124,9 @@ document.getElementById("sendRemindersBtn")?.addEventListener("click", async () 
     headers: salesHeaders(true),
     body: JSON.stringify({ delayMinutes })
   });
-  if (!res.ok) return alert("ØªØ¹Ø°Ø± Ø¥Ø±Ø³Ø§Ù„ Ø§Ù„ØªØ°ÙƒÙŠØ±Ø§Øª");
+  if (!res.ok) return alert("حدث خطأ أثناء إرسال التذكيرات");
   const data = await res.json();
-  alert(`ØªÙ… Ø¥Ø±Ø³Ø§Ù„ ${data.sent} ØªØ°ÙƒÙŠØ± Ù…Ù† ${data.checked}`);
+  alert(`تم إرسال ${data.sent} تذكير من ${data.checked}`);
   loadAbandoned();
 });
 
@@ -137,25 +139,25 @@ async function loadSales() {
   const res = await fetch(`${salesApi}/reports/sales?${qs.toString()}`, { headers: salesHeaders() });
   if (res.status === 401) return (location.href = "admin-login.html");
   if (!res.ok) {
-    document.getElementById("salesSummary").innerHTML = "<p style='color:#e74c3c'>ØªØ¹Ø°Ø± ØªØ­Ù…ÙŠÙ„ Ø§Ù„ØªÙ‚Ø§Ø±ÙŠØ±.</p>";
+    document.getElementById("salesSummary").innerHTML = "<p style='color:#e74c3c'>حدث خطأ أثناء تحميل التقارير.</p>";
     return;
   }
   const data = await res.json();
   document.getElementById("salesSummary").innerHTML = `
     <div class="admin-grid" style="margin-bottom:10px">
-      <div class="admin-card">Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„Ø·Ù„Ø¨Ø§Øª<br><strong>${data.totals.totalOrders}</strong></div>
-      <div class="admin-card">Ø§Ù„Ø¥ÙŠØ±Ø§Ø¯<br><strong>${money(data.totals.totalRevenue)}</strong></div>
-      <div class="admin-card">Ø·Ù„Ø¨Ø§Øª Ù…Ø¯ÙÙˆØ¹Ø©<br><strong>${data.totals.paidOrders}</strong></div>
-      <div class="admin-card">Ù…ØªÙˆØ³Ø· Ø§Ù„Ø·Ù„Ø¨<br><strong>${money(data.totals.avgOrderValue)}</strong></div>
+      <div class="admin-card">عدد الطلبات<br><strong>${data.totals.totalOrders}</strong></div>
+      <div class="admin-card">الإيراد<br><strong>${money(data.totals.totalRevenue)}</strong></div>
+      <div class="admin-card">طلبات مدفوعة<br><strong>${data.totals.paidOrders}</strong></div>
+      <div class="admin-card">متوسط قيمة الطلب<br><strong>${money(data.totals.avgOrderValue)}</strong></div>
     </div>
   `;
   document.getElementById("revenueChart").innerHTML = data.daily.length
-    ? `<table class="admin-table"><thead><tr><th>Ø§Ù„ÙŠÙˆÙ…</th><th>Ø·Ù„Ø¨Ø§Øª</th><th>Ø¥ÙŠØ±Ø§Ø¯</th></tr></thead><tbody>${data.daily.map((d) => `<tr><td>${d.date}</td><td>${d.orders}</td><td>${money(d.revenue)}</td></tr>`).join("")}</tbody></table>`
-    : "<p style='color:var(--muted)'>Ù„Ø§ ÙŠÙˆØ¬Ø¯ Ø¨ÙŠØ§Ù†Ø§Øª Ù„Ù„ÙØªØ±Ø©.</p>";
+    ? `<table class="admin-table"><thead><tr><th>اليوم</th><th>طلبات</th><th>إيراد</th></tr></thead><tbody>${data.daily.map((d) => `<tr><td>${d.date}</td><td>${d.orders}</td><td>${money(d.revenue)}</td></tr>`).join("")}</tbody></table>`
+    : "<p style='color:var(--muted)'>لا توجد بيانات للفترة.</p>";
   document.getElementById("topProductsWrap").innerHTML = data.topProducts.length
-    ? `<table class="admin-table"><thead><tr><th>Ø§Ù„Ù…Ù†ØªØ¬</th><th>Ø§Ù„ÙƒÙ…ÙŠØ©</th><th>Ø§Ù„Ø¥ÙŠØ±Ø§Ø¯</th></tr></thead><tbody>${data.topProducts.map((p) => `<tr><td>${p.name}</td><td>${p.qty}</td><td>${money(p.revenue)}</td></tr>`).join("")}</tbody></table>`
-    : "<p style='color:var(--muted)'>Ù„Ø§ ØªÙˆØ¬Ø¯ Ø¨ÙŠØ§Ù†Ø§Øª.</p>";
-  document.getElementById("dailyWrap").innerHTML = `<p style="color:var(--muted)">Ø·Ø±Ù‚ Ø§Ù„Ø¯ÙØ¹: ${Object.entries(data.byPaymentMethod || {}).map(([k, v]) => `${k}: ${money(v)}`).join(" | ") || "-"}</p>`;
+    ? `<table class="admin-table"><thead><tr><th>المنتج</th><th>الكمية</th><th>الإيراد</th></tr></thead><tbody>${data.topProducts.map((p) => `<tr><td>${p.name}</td><td>${p.qty}</td><td>${money(p.revenue)}</td></tr>`).join("")}</tbody></table>`
+    : "<p style='color:var(--muted)'>لا توجد بيانات.</p>";
+  document.getElementById("dailyWrap").innerHTML = `<p style="color:var(--muted)">طريق الدفع: ${Object.entries(data.byPaymentMethod || {}).map(([k, v]) => `${k}: ${money(v)}`).join(" | ") || "-"}</p>`;
   const exportExcelBtn = document.getElementById("exportExcelBtn");
   if (exportExcelBtn) exportExcelBtn.onclick = () => {
     const rows = [["Date", "Orders", "Revenue"], ...(data.daily || []).map((d) => [d.date, d.orders, d.revenue])];

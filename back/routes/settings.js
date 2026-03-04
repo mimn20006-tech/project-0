@@ -4,10 +4,11 @@ const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 const { requirePermission } = require("../middleware/auth");
+const { getUploadDir, toUploadUrl } = require("../utils/uploads");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const uploadPath = path.join(__dirname, "..", "uploads");
+    const uploadPath = getUploadDir();
     fs.mkdirSync(uploadPath, { recursive: true });
     cb(null, uploadPath);
   },
@@ -37,7 +38,7 @@ router.get("/hero", async (req, res) => {
 router.put("/hero", requirePermission("settings.manage"), upload.any(), async (req, res) => {
   let images = (req.files || [])
     .filter((f) => ["images", "heroImages", "heroImage"].includes(f.fieldname))
-    .map((f) => `/uploads/${f.filename}`);
+    .map((f) => toUploadUrl(f.filename));
   if (!images.length && Array.isArray(req.body?.images)) {
     images = req.body.images.map((x) => String(x || "").trim()).filter(Boolean);
   }
@@ -99,7 +100,7 @@ router.put("/site", requirePermission("settings.manage"), upload.any(), async (r
   };
 
   if (uploadedImage) {
-    const imagePath = `/uploads/${uploadedImage.filename}`;
+    const imagePath = toUploadUrl(uploadedImage.filename);
     next.image = imagePath;
     next.heroImage = imagePath;
   }

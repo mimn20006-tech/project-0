@@ -1,7 +1,7 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
 const User = require("./models/user");
-const { sendMail } = require("./utils/mailer");
+const { sendVerificationEmail } = require("./utils/sendgrid");
 
 const MONGODB_URI = process.env.MONGODB_URI;
 if (!MONGODB_URI || MONGODB_URI.includes("USER:PASSWORD@HOST")) {
@@ -39,11 +39,7 @@ async function testVerifyFlow() {
 
     console.log("📧 Step 2: Sending verification email...");
     try {
-      await sendMail({
-        to: testEmail,
-        subject: "Hand Aura - تأكيد الحساب",
-        text: `رمز تأكيد الحساب: ${verifyCode}`
-      });
+      await sendVerificationEmail(testEmail, verifyCode);
       console.log("✅ Email sent successfully\n");
     } catch (mailErr) {
       console.error("❌ Email send failed:", mailErr.message);
@@ -66,11 +62,7 @@ async function testVerifyFlow() {
     await savedUser.save();
     
     try {
-      await sendMail({
-        to: testEmail,
-        subject: "Hand Aura - تأكيد الحساب",
-        text: `رمز تأكيد الحساب: ${newVerifyCode}`
-      });
+      await sendVerificationEmail(testEmail, newVerifyCode);
       console.log(`✅ Resend email sent with new code: ${newVerifyCode}\n`);
     } catch (mailErr) {
       console.error("❌ Resend email failed:", mailErr.message);

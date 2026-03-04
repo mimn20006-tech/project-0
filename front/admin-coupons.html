@@ -4,7 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>إدارة الكوبونات | Hand Aura</title>
-  <link rel="stylesheet" href="style.css?v=20260214">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="site-logo.png">
+  <link rel="apple-touch-icon" href="site-logo.png">
 </head>
 <body class="center-page">
   <header class="admin-topbar">
@@ -32,8 +34,10 @@
         <input type="number" id="couponMaxDiscount" placeholder="حد أقصى للخصم (اختياري)">
         <input type="number" id="couponUsageLimit" placeholder="الحد الكلي للاستخدام (0 = بدون حد)">
         <input type="number" id="couponPerUserLimit" placeholder="الحد لكل مستخدم" value="1">
+        <input type="number" id="couponPointsCost" placeholder="سعر البون بالنقاط (0 = غير متاح بالمتجر)" value="0">
         <label><input type="checkbox" id="couponFirstOrderOnly"> أول طلب فقط</label>
         <label><input type="checkbox" id="couponEnabled" checked> مفعل</label>
+        <label><input type="checkbox" id="couponVisibleInStore" checked> يظهر في متجر البونات للمستخدم</label>
         <button type="submit" id="couponSubmitBtn">حفظ الكوبون</button>
       </form>
       <div id="couponsTableWrap"></div>
@@ -58,10 +62,16 @@
     <button type="button" class="side-logout" id="adminLogoutBtn">تسجيل الخروج</button>
   </aside>
 
-  <script src="admin-coupons.js?v=20260221"></script>
+  <script src="admin-coupons.js"></script>
   
+  <script src="seo.js?v=20260228"></script>
 </body>
 </html>
+
+
+
+
+
 
 
 

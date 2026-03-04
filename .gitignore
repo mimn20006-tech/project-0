@@ -8,3 +8,6 @@ back/.DS_Store
 .DS_Store
 npm-debug.log*
 *.log
+mobile/android/keystore.properties
+mobile/android/app/*.jks
+mobile/android/app/*.keystore

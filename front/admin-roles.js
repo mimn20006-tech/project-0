@@ -50,7 +50,9 @@ function bindMenu() {
 
 function setupDarkMode() {
   const key = "admin_dark_mode";
-  const isDark = localStorage.getItem(key) === "1";
+  const saved = localStorage.getItem(key);
+  const isDark = saved === null ? true : saved === "1";
+  if (saved === null) localStorage.setItem(key, "1");
   document.body.classList.toggle("admin-dark", isDark);
   const topbar = document.querySelector(".admin-topbar-inner");
   if (!topbar || document.getElementById("adminDarkToggle")) return;
@@ -58,12 +60,12 @@ function setupDarkMode() {
   btn.id = "adminDarkToggle";
   btn.type = "button";
   btn.className = "icon-btn";
-  btn.textContent = isDark ? "â˜€" : "ðŸŒ™";
+  btn.textContent = isDark ? "☀️" : "🌙";
   btn.addEventListener("click", () => {
     const nowDark = !document.body.classList.contains("admin-dark");
     document.body.classList.toggle("admin-dark", nowDark);
     localStorage.setItem(key, nowDark ? "1" : "0");
-    btn.textContent = nowDark ? "â˜€" : "ðŸŒ™";
+    btn.textContent = nowDark ? "☀️" : "🌙";
   });
   topbar.appendChild(btn);
 }
@@ -71,7 +73,7 @@ function setupDarkMode() {
 async function loadRoles() {
   const wrap = document.getElementById("rolesTableWrap");
   if (!wrap) return;
-  wrap.innerHTML = "<p style='color:var(--muted)'>Ø¬Ø§Ø±ÙŠ Ø§Ù„ØªØ­Ù…ÙŠÙ„...</p>";
+  wrap.innerHTML = "<p style='color:var(--muted)'>جارٍ تحميل الأدوار...</p>";
   const res = await fetch(`${adminRolesApi}/admin/users`, { headers: adminHeaders() });
   if (res.status === 401) {
     localStorage.removeItem("admin_token");
@@ -79,22 +81,24 @@ async function loadRoles() {
     return;
   }
   if (!res.ok) {
-    wrap.innerHTML = "<p style='color:#e74c3c'>ØªØ¹Ø°Ø± ØªØ­Ù…ÙŠÙ„ Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù…ÙŠÙ†.</p>";
+    wrap.innerHTML = "<p style='color:#e74c3c'>حدث خطأ أثناء تحميل الأدوار.</p>";
     return;
   }
   const users = await res.json();
   if (!users.length) {
-    wrap.innerHTML = "<p style='color:var(--muted)'>Ù„Ø§ ÙŠÙˆØ¬Ø¯ Ù…Ø³ØªØ®Ø¯Ù…ÙˆÙ†.</p>";
+    wrap.innerHTML = "<p style='color:var(--muted)'>لا يوجد مستخدمين.</p>";
     return;
   }
   wrap.innerHTML = `
     <table class="admin-table">
       <thead>
         <tr>
-          <th>Ø§Ù„Ø§Ø³Ù…</th>
-          <th>Ø§Ù„Ø¥ÙŠÙ…ÙŠÙ„</th>
-          <th>Ø§Ù„Ø¯ÙˆØ±</th>
-          <th>Ø­ÙØ¸</th>
+          <th>الاسم</th>
+          <th>البريد الإلكتروني</th>
+          <th>النقاط</th>
+          <th>الدور</th>
+          <th>حفظ</th>
+          <th>حذف العميل</th>
         </tr>
       </thead>
       <tbody>
@@ -102,6 +106,7 @@ async function loadRoles() {
           <tr>
             <td>${u.name || "-"}</td>
             <td>${u.email || "-"}</td>
+            <td>${Number(u.loyaltyPoints || 0)}</td>
             <td>
               <select data-role-id="${u._id}">
                 <option value="admin" ${u.role === "admin" ? "selected" : ""}>admin</option>
@@ -110,7 +115,8 @@ async function loadRoles() {
                 <option value="user" ${u.role === "user" ? "selected" : ""}>user</option>
               </select>
             </td>
-            <td><button type="button" class="admin-btn admin-btn-edit" data-save-id="${u._id}">Ø­ÙØ¸</button></td>
+            <td><button type="button" class="admin-btn admin-btn-edit" data-save-id="${u._id}">حفظ</button></td>
+            <td><button type="button" class="admin-btn admin-btn-delete" data-del-id="${u._id}">حذف</button></td>
           </tr>
         `).join("")}
       </tbody>
@@ -129,11 +135,38 @@ async function loadRoles() {
       });
       btn.disabled = false;
       if (!update.ok) {
-        alert("ØªØ¹Ø°Ø± Ø­ÙØ¸ Ø§Ù„Ø¯ÙˆØ±");
+        alert("حدث خطأ أثناء حفظ الدور");
         return;
       }
-      btn.textContent = "ØªÙ…";
-      setTimeout(() => (btn.textContent = "Ø­ÙØ¸"), 1200);
+      btn.textContent = "تم";
+      setTimeout(() => (btn.textContent = "حفظ"), 1200);
+    });
+  });
+
+  wrap.querySelectorAll("[data-del-id]").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const id = btn.dataset.delId;
+      const row = btn.closest("tr");
+      const emailCell = row?.querySelector("td:nth-child(2)");
+      const email = emailCell ? emailCell.textContent.trim() : "";
+      const sure = confirm(`هل تريد حذف العميل ${email || ""}؟ يمكنه التسجيل مرة أخرى لاحقًا.`);
+      if (!sure) return;
+      btn.disabled = true;
+      const del = await fetch(`${adminRolesApi}/admin/users/${id}`, {
+        method: "DELETE",
+        headers: adminHeaders()
+      });
+      if (!del.ok) {
+        btn.disabled = false;
+        let msg = "تعذر حذف العميل";
+        try {
+          const data = await del.json();
+          if (data?.error) msg = data.error;
+        } catch {}
+        alert(msg);
+        return;
+      }
+      row?.remove();
     });
   });
 }

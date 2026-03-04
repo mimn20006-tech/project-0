@@ -1,0 +1,201 @@
+{
+  "createdAt": "2026-02-22T07:30:47.512Z",
+  "products": [
+    {
+      "_id": "69998f1a415a322866b334fd",
+      "name": "Hoodie",
+      "price": 500,
+      "stock": 4,
+      "category": "Men",
+      "type": "hoodie",
+      "sizes": [
+        "XL"
+      ],
+      "description": "",
+      "colors": [
+        "White",
+        "Black"
+      ],
+      "ratings": [],
+      "avgRating": 0,
+      "ratingsCount": 0,
+      "image": "/uploads/1771671322385-183752021.jpeg",
+      "images": [
+        "/uploads/1771671322385-183752021.jpeg"
+      ],
+      "__v": 2
+    }
+  ],
+  "orders": [
+    {
+      "_id": "6999a64900484f3bab86326d",
+      "userId": "6999809f415a322866b333c2",
+      "customerName": "Youssef Nadi",
+      "customerEmail": "yimn04978@gmail.com",
+      "customerPhone": "01025457419",
+      "address": "الفيوم",
+      "items": [
+        {
+          "productId": "69998f1a415a322866b334fd",
+          "name": "Hoodie",
+          "price": 500,
+          "quantity": 1,
+          "image": "/uploads/1771671322385-183752021.jpeg",
+          "size": "XL",
+          "color": "White",
+          "_id": "6999a64900484f3bab86326e"
+        }
+      ],
+      "subtotal": 500,
+      "discountTotal": 0,
+      "total": 500,
+      "paymentMethod": "cash_on_delivery",
+      "transactionCode": "TX-MLWAW8Y1-G1PFFA",
+      "paymentStatus": "paid",
+      "paidAt": "2026-02-21T12:34:17.545Z",
+      "status": "pending",
+      "createdAt": "2026-02-21T12:34:17.552Z",
+      "__v": 0
+    }
+  ],
+  "users": [
+    {
+      "_id": "69997f36be2613729fce71e3",
+      "name": "Mohamed Ibrahim",
+      "email": "m.imn20004@gmail.com",
+      "role": "user",
+      "permissions": [],
+      "emailVerified": true,
+      "adminTwoFactorEnabled": false,
+      "__v": 0
+    },
+    {
+      "_id": "6999809f415a322866b333c2",
+      "name": "Youssef Nadi",
+      "email": "yimn04978@gmail.com",
+      "role": "user",
+      "permissions": [],
+      "emailVerified": true,
+      "adminTwoFactorEnabled": false,
+      "__v": 0,
+      "address": "الفيوم",
+      "loyaltyPoints": 50
+    },
+    {
+      "_id": "69998c3c415a322866b334e3",
+      "name": "System",
+      "email": "1handaura1@gmail.com",
+      "role": "admin",
+      "permissions": [],
+      "emailVerified": true,
+      "adminTwoFactorEnabled": false,
+      "__v": 0
+    }
+  ],
+  "settings": [
+    {
+      "_id": "69998c4bcb3dfbcadd49029a",
+      "key": "shopFilters",
+      "__v": 0,
+      "value": {
+        "categories": [
+          {
+            "key": "Men",
+            "labelAr": "رجالي",
+            "labelEn": "Men",
+            "enabled": true
+          },
+          {
+            "key": "Women",
+            "labelAr": "نسائي",
+            "labelEn": "Women",
+            "enabled": true
+          },
+          {
+            "key": "Children",
+            "labelAr": "أطفال",
+            "labelEn": "Children",
+            "enabled": false
+          }
+        ],
+        "types": [
+          {
+            "key": "hoodie",
+            "labelAr": "هودي",
+            "labelEn": "Hoodie",
+            "enabled": true
+          },
+          {
+            "key": "tshirt",
+            "labelAr": "تيشيرت",
+            "labelEn": "T-Shirt",
+            "enabled": true
+          },
+          {
+            "key": "pants",
+            "labelAr": "بنطلون",
+            "labelEn": "Pants",
+            "enabled": true
+          },
+          {
+            "key": "jacket",
+            "labelAr": "جاكيت",
+            "labelEn": "Jacket",
+            "enabled": false
+          },
+          {
+            "key": "shirt",
+            "labelAr": "قميص",
+            "labelEn": "Shirt",
+            "enabled": false
+          },
+          {
+            "key": "dress",
+            "labelAr": "فستان",
+            "labelEn": "Dress",
+            "enabled": false
+          }
+        ]
+      }
+    },
+    {
+      "_id": "6999932acb3dfbcadd490302",
+      "key": "heroImages",
+      "__v": 0,
+      "value": [
+        "/uploads/1771672361450-158051040.jpeg"
+      ]
+    },
+    {
+      "_id": "699996e6cb3dfbcadd49e8d1",
+      "key": "i18n",
+      "__v": 0,
+      "value": {
+        "defaultLang": "ar",
+        "languages": [
+          "ar",
+          "en",
+          "fr"
+        ],
+        "dict": {}
+      }
+    },
+    {
+      "_id": "699997b5cb3dfbcadd49edaf",
+      "key": "siteMeta",
+      "__v": 0,
+      "value": {
+        "title": "Hand Aura",
+        "description": "pg,",
+        "heroImage": "/uploads/1771673523728-927406658.jpg",
+        "image": "/uploads/1771673523728-927406658.jpg"
+      }
+    },
+    {
+      "_id": "69999c0bcb3dfbcadd49f51c",
+      "key": "lowStockThreshold",
+      "__v": 0,
+      "value": 5
+    }
+  ]
+}

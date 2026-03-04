@@ -14,7 +14,9 @@ function issueToken(user) {
       phone: user.phone,
       country: user.country,
       address: user.address,
-      avatar: user.avatar
+      avatar: user.avatar,
+      loyaltyPoints: Number(user.loyaltyPoints || 0),
+      loyaltySpent: Number(user.loyaltySpent || 0)
     },
     JWT_SECRET,
     { expiresIn: "7d" }
@@ -30,7 +32,9 @@ function htmlRedirect(token, user) {
     phone: user.phone,
     country: user.country,
     address: user.address,
-    avatar: user.avatar
+    avatar: user.avatar,
+    loyaltyPoints: Number(user.loyaltyPoints || 0),
+    loyaltySpent: Number(user.loyaltySpent || 0)
   }).replace(/</g, "\\u003c");
   return `<!doctype html>
   <html><head><meta charset="utf-8"><title>Signed in</title></head>

@@ -5,12 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>نسيت كلمة المرور | Hand Aura</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="site-logo.png">
+  <link rel="apple-touch-icon" href="site-logo.png">
 </head>
-<body class="center-page">
+<body class="center-page clone-ui">
   <header class="header">
     <div class="header-top">
       <button class="icon-btn menu-btn" aria-label="القائمة">☰</button>
       <a href="index.html" class="logo">Hand Aura</a>
+      <nav class="clone-nav" aria-label="روابط رئيسية">
+        <a href="index.html" class="active">الرئيسية</a>
+        <a href="profile.html">الحساب</a>
+      </nav>
       <div class="header-actions">
         <a href="login.html" class="track-link">تسجيل الدخول</a>
       </div>
@@ -31,11 +37,32 @@
     </section>
   </main>
 
-  <script src="auth.js"></script>
-  <script src="auth-ui.js?v=20260221d"></script>
+  <script src="auth-20260222.js"></script>
+  <script src="auth-ui-20260222.js"></script>
+  <div class="menu-overlay" id="menuOverlay"></div>
+  <aside class="side-menu" id="sideMenu">
+    <div class="side-menu-header">Hand Aura</div>
+    <a href="index.html" data-i18n-global="home">الرئيسية</a>
+    <a href="track.html" data-i18n-global="track">تتبع الطلب</a>
+    <a href="cart.html" data-i18n-global="cart">السلة</a>
+    <a href="orders.html" data-i18n-global="orders">سجل الطلبات</a>
+    <a href="login.html" data-auth="guest" data-i18n-global="login">تسجيل الدخول</a>
+    <a href="register.html" data-auth="guest" data-i18n-global="signup">إنشاء حساب</a>
+    <a href="profile.html" data-auth="user" data-i18n-global="account">الحساب</a>
+    <button type="button" class="side-logout" id="logoutBtn" data-auth="user" data-i18n-global="logout">تسجيل الخروج</button>
+  </aside>
   
+  <script src="seo.js?v=20260228"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+
 
 
 

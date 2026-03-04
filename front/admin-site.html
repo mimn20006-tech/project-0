@@ -3,54 +3,62 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª Ø§Ù„Ù…ÙˆÙ‚Ø¹ | Hand Aura</title>
-  <link rel="stylesheet" href="style.css?v=20260214">
+  <title>إعدادات الموقع | Hand Aura</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="site-logo.png">
+  <link rel="apple-touch-icon" href="site-logo.png">
 </head>
 <body class="center-page">
   <header class="admin-topbar">
     <div class="admin-topbar-inner">
-      <button class="icon-btn menu-btn" aria-label="Ø§Ù„Ù‚Ø§Ø¦Ù…Ø©">â˜°</button>
-      <div class="admin-brand">Hand Aura | Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª Ø§Ù„Ù…ÙˆÙ‚Ø¹</div>
-      <a href="index.html" class="admin-back">Ø§Ù„Ø¹ÙˆØ¯Ø©</a>
+      <button class="icon-btn menu-btn" aria-label="القائمة">☰</button>
+      <div class="admin-brand">Hand Aura | إعدادات الموقع</div>
+      <a href="index.html" class="admin-back">العودة</a>
     </div>
   </header>
 
   <main class="main center-main">
     <div class="admin-section">
-      <h2>Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ù…ÙˆÙ‚Ø¹ (SEO)</h2>
+      <h2>إعدادات بيئة الموقع (SEO)</h2>
       <form id="siteForm" class="admin-form" enctype="multipart/form-data">
-        <label for="siteTitle">Ø¹Ù†ÙˆØ§Ù† Ø§Ù„Ù…ÙˆÙ‚Ø¹</label>
-        <input type="text" id="siteTitle" placeholder="Ø£Ø¯Ø®Ù„ Ø¹Ù†ÙˆØ§Ù† Ø§Ù„Ù…ÙˆÙ‚Ø¹" required maxlength="120">
-        <label for="siteDescription">ÙˆØµÙ Ø§Ù„Ù…ÙˆÙ‚Ø¹</label>
-        <textarea id="siteDescription" rows="4" placeholder="Ø£Ø¯Ø®Ù„ ÙˆØµÙ Ø§Ù„Ù…ÙˆÙ‚Ø¹ Ø¨Ø¥ÙŠØ¬Ø§Ø²" required maxlength="320"></textarea>
-        <label for="siteImage">ØµÙˆØ±Ø© Ø§Ù„Ù…ÙˆÙ‚Ø¹ (ØªÙØ³ØªØ®Ø¯Ù… ÙÙŠ Ù…Ø´Ø§Ø±ÙƒØ§Øª ÙˆØ³Ø§Ø¦Ù„ Ø§Ù„ØªÙˆØ§ØµÙ„)</label>
+        <label for="siteTitle">عنوان الموقع</label>
+        <input type="text" id="siteTitle" placeholder="أدخل عنوان الموقع" required maxlength="120">
+        <label for="siteDescription">وصف الموقع</label>
+        <textarea id="siteDescription" rows="4" placeholder="أدخل وصف الموقع بأسلوب إيجابي" required maxlength="320"></textarea>
+        <label for="siteImage">صورة الموقع (تُستخدَم في المشاركة + أيقونة التبويب)</label>
         <input type="file" id="siteImage" accept="image/*">
-        <button type="submit">Ø­ÙØ¸ Ø§Ù„ØªØ¹Ø¯ÙŠÙ„Ø§Øª</button>
-        <small style="color:var(--muted)">Ø³ØªØ¸Ù‡Ø± Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª ÙÙŠ Ù†ØªØ§Ø¦Ø¬ Ø§Ù„Ø¨Ø­Ø« ÙˆÙ…Ø´Ø§Ø±ÙƒØ§Øª Ø§Ù„ÙˆØ³Ø§Ø¦Ø·.</small>
+        <button type="submit">حفظ الإعدادات</button>
+        <small style="color:var(--muted)">ستُستخدم هذه البيانات في مشاركة المواقع ونتائج البحث.</small>
       </form>
       <div id="sitePreview" class="site-search-preview"></div>
     </div>
   </main>
 
-  <script src="admin.js?v=20260221"></script>
+  <script src="admin.js?v=20260222"></script>
   <div class="menu-overlay" id="menuOverlay"></div>
   <aside class="side-menu" id="sideMenu">
     <div class="side-menu-header">Admin</div>
-    <a href="admin.html">Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠØ©</a>
-    <a href="admin-products.html">Ø§Ù„Ù…Ù†ØªØ¬Ø§Øª</a>
-    <a href="admin-orders.html">Ø§Ù„Ø·Ù„Ø¨Ø§Øª</a>
-    <a href="admin-roles.html">Ø§Ù„ØµÙ„Ø§Ø­ÙŠØ§Øª</a>
-    <a href="admin-translations.html">Ø§Ù„ØªØ±Ø¬Ù…Ø©</a>
-    <a href="admin-coupons.html">ÙƒÙˆØ¨ÙˆÙ†Ø§Øª</a>
-    <a href="admin-sales.html">Ø§Ù„Ù…Ø¨ÙŠØ¹Ø§Øª</a>
-    <a href="admin-comments.html">Ø§Ù„ØªØ¹Ù„ÙŠÙ‚Ø§Øª</a>
-    <a href="admin-hero.html">Ø§Ù„ÙˆØ§Ø¬Ù‡Ø©</a>
-    <a href="admin-filters.html">Ø§Ù„ÙÙ„Ø§ØªØ±</a>
-    <a href="admin-site.html">Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª Ø§Ù„Ù…ÙˆÙ‚Ø¹</a>
-    <a href="admin-password.html">ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ±</a>
-    <button type="button" class="side-logout" id="adminLogoutBtn">ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø®Ø±ÙˆØ¬</button>
+    <a href="admin.html">الرئيسيّة</a>
+    <a href="admin-products.html">المنتجات</a>
+    <a href="admin-orders.html">الطلبات</a>
+    <a href="admin-roles.html">الصلاحيات</a>
+    <a href="admin-translations.html">الترجمة</a>
+    <a href="admin-coupons.html">كوبونات</a>
+    <a href="admin-sales.html">المبيعات</a>
+    <a href="admin-comments.html">التعليقات</a>
+    <a href="admin-hero.html">الواجهة</a>
+    <a href="admin-filters.html">الفلاتر</a>
+    <a href="admin-site.html">إعدادات الموقع</a>
+    <a href="admin-password.html">كلمة المرور</a>
+    <button type="button" class="side-logout" id="adminLogoutBtn">تسجيل الخروج</button>
   </aside>
   
+  <script src="seo.js?v=20260228"></script>
 </body>
 </html>
+
+
+
+
+
 

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Hand Aura</string>
+    <string name="title_activity_main">Hand Aura</string>
+    <string name="package_name">com.handaura.store</string>
+    <string name="custom_url_scheme">com.handaura.store</string>
+</resources>

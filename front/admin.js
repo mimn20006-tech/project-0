@@ -1,10 +1,11 @@
 ﻿const host = window.location.hostname;
+const isCapacitorApp = !!(window.Capacitor && (window.Capacitor.isNativePlatform ? window.Capacitor.isNativePlatform() : true));
 const isLocal = /^(localhost|127[.]0[.]0[.]1)$/i.test(host);
-const BACKEND = isLocal
+const DEPLOY_BACKEND = "https://ecommerce-api-production-c3a5.up.railway.app";
+const BACKEND = isCapacitorApp ? DEPLOY_BACKEND : (isLocal
   ? "http://" + host + ":5000"
-  : "https://ecommerce-api-production-c3a5.up.railway.app";
-const API = BACKEND + "/api";
-const productForm = document.getElementById("productForm");
+  : DEPLOY_BACKEND);
+const API = BACKEND + "/api";const productForm = document.getElementById("productForm");
 const submitProductBtn = document.getElementById("submitProductBtn");
 const heroForm = document.getElementById("heroForm");
 const heroPreview = document.getElementById("heroPreview");
@@ -761,7 +762,9 @@ document.addEventListener("DOMContentLoaded", bindAdminMenu);
 
 function setupAdminDarkMode() {
   const key = "admin_dark_mode";
-  const isDark = localStorage.getItem(key) === "1";
+  const saved = localStorage.getItem(key);
+  const isDark = saved === null ? true : saved === "1";
+  if (saved === null) localStorage.setItem(key, "1");
   document.body.classList.toggle("admin-dark", isDark);
   const topbar = document.querySelector(".admin-topbar-inner");
   if (!topbar || document.getElementById("adminDarkToggle")) return;
@@ -922,6 +925,8 @@ document.addEventListener("DOMContentLoaded", () => {
   setupAdminDarkMode();
   loadDashboardAlerts();
 });
+
+
 
 
 
